@@ -1,29 +1,28 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// When running the script with `npx hardhat run <script>` you'll find the Hardhat
-// Runtime Environment's members available in the global scope.
-const hre = require("hardhat");
+//implement ethers from hardhat
+const{ethers} = require("hardhat");
 
-async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+async function main(){
+     /*
+  A ContractFactory in ethers.js is an abstraction used to deploy new smart contracts,
+  so NestcoinContract here is a factory for instances of our Nestcoin contract.
+  */
+ console.log("deploying ZuriElection contract.......")
+    const ZuriElection = await ethers.getContractFactory("ZuriElection");
 
-  // We get the contract to deploy
-  const Greeter = await hre.ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+    // here we deploy the contract
+    const zuri = await ZuriElection.deploy();
 
-  await greeter.deployed();
+    // Wait for it to finish deploying
+  await zuri.deployed();
 
-  console.log("Greeter deployed to:", greeter.address);
+  // print the address of the deployed contract
+  console.log(
+    "\n 🏵 ZuriElection Contract Address:",
+    zuri.address
+  );
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
+// Call the main function and catch if there is any error
 main()
   .then(() => process.exit(0))
   .catch((error) => {
