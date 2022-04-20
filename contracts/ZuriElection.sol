@@ -1,27 +1,26 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract ZuriElection is Pausable, Initializable, UUPSUpgradeable  {
+contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
 
-    function initialize() initializer public {
+    function initialize() public initializer {
         chairman == msg.sender;
         __UUPSUpgradeable_init();
     }
 
     function _authorizeUpgrade(address newImplementation)
         internal
-        onlyOwner
         override
+        onlyChairman
     {}
-  
+
     /// =============== VARIABLES ================================
     address public chairman;
     string public name;
@@ -52,8 +51,18 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable  {
     }
 
     ///================== PUBLIC FUNCTIONS =============================
+    function vote(uint256 _candidateId, bytes32[] calldata hexProof)
+        public
+        electionIsStillOn
+        electionIsActive
+    {
+        require(
+            isValid(hexProof, keccak256(abi.encodePacked(msg.sender))),
+            "Not a part of Allowlist"
+        );
+        _vote(_candidateId, msg.sender);
+    }
 
-  
     // Setting of variables and data, during the creation of election contract
     function _setUpElection(string[] memory _nda, string[] memory _candidates)
         internal
@@ -125,9 +134,6 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable  {
         _calcElectionWinner();
         emit ElectionEnded(winnerIds, winnerVoteCount);
     }
-
-   
-
 
     function isValid(bytes32[] memory proof, bytes32 leaf)
         public
