@@ -4,13 +4,24 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract ZuriElection is Pausable {
+contract ZuriElection is Pausable, Initializable, UUPSUpgradeable  {
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        chairman = msg.sender;
+    constructor() initializer {}
+
+    function initialize() initializer public {
+        chairman == msg.sender;
+        __UUPSUpgradeable_init();
     }
 
+    function _authorizeUpgrade(address newImplementation)
+        internal
+        onlyOwner
+        override
+    {}
+  
     /// =============== VARIABLES ================================
     address public chairman;
     string public name;
@@ -42,18 +53,7 @@ contract ZuriElection is Pausable {
 
     ///================== PUBLIC FUNCTIONS =============================
 
-    function vote(uint256 _candidateId, bytes32[] calldata hexProof)
-        public
-        electionIsStillOn
-        electionIsActive
-    {
-        require(
-            isValid(hexProof, keccak256(abi.encodePacked(msg.sender))),
-            "Not a part of Allowlist"
-        );
-        _vote(_candidateId, msg.sender);
-    }
-
+  
     // Setting of variables and data, during the creation of election contract
     function _setUpElection(string[] memory _nda, string[] memory _candidates)
         internal
