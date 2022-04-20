@@ -1,21 +1,23 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
 import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-contract ZuriElection is Initializable, Pausable, UUPSUpgradeable {
+contract ZuriElection is Pausable {
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer {}
+    constructor() {
+        chairman = msg.sender;
+    }
 
     /// =============== VARIABLES ================================
     address public chairman;
     string public name;
     string public description;
 
-    bytes32 public root;
+    bytes32 public root =
+        0x4c29915a50ec868ab99f5844b969c0ad438aec20e61efe2541dbcaf674cc6356;
 
     uint256 public candidatesCount = 0;
 
@@ -124,17 +126,8 @@ contract ZuriElection is Initializable, Pausable, UUPSUpgradeable {
         emit ElectionEnded(winnerIds, winnerVoteCount);
     }
 
-    function initialize(bytes32 _root) public initializer {
-        root = _root;
-        chairman = msg.sender;
-        __UUPSUpgradeable_init();
-    }
+   
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        onlyChairman
-    {}
 
     function isValid(bytes32[] memory proof, bytes32 leaf)
         public
