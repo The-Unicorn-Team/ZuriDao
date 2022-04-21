@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-
 /// @notice imported contracts from openzepplin to pause, verify proof and upgrade contract
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
@@ -22,16 +21,18 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
         chairman == msg.sender;
         __UUPSUpgradeable_init();
     }
+
     ///@notice function to call to upgrade contract
-    ///@param address of new version of contract
+    ///@param newImplementation is the address of new version of this contract
     ///@dev only chairman can call this function
     function _authorizeUpgrade(address newImplementation)
         internal
         override
         onlyChairman
+        whenNotPaused
     {}
 
-    /// =============== VARIABLES ================================
+    /// =================== VARIABLES ================================
 
     ///@notice address of chairman
     address public chairman;
@@ -96,9 +97,7 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
             isValid(hexProof, keccak256(abi.encodePacked(msg.sender))),
             "Not a part of Allowlist"
         );
-       
 
-       
         _vote(_candidateId, msg.sender);
     }
 
@@ -106,6 +105,7 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     ///@param _nda which is an array candidate information
     function _setUpElection(string[] memory _nda, string[] memory _candidates)
         internal
+        whenNotPaused
     {
         require(
             _candidates.length > 0,
@@ -118,14 +118,13 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
         }
     }
 
-  
-
     /// =============== INTERNAL FUNCTIONS ================================
-  ///@notice internal function that allows users vote
+    ///@notice internal function that allows users vote
     ///@param _candidateId and voter's address
-    
+
     function _vote(uint256 _candidateId, address _voter)
         internal
+        whenNotPaused
         onlyValidCandidate(_candidateId)
     {
         require(!voted[_voter], "Voter has already Voted!");
@@ -135,10 +134,10 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
         emit VoteForCandidate(_candidateId, candidates[_candidateId].voteCount);
     }
 
-    ///@notice internal function to add candidate to election 
+    ///@notice internal function to add candidate to election
     ///@param _name of candidate
-    ///@dev function creates a struct of candidates 
-    function _addCandidate(string memory _name) internal {
+    ///@dev function creates a struct of candidates
+    function _addCandidate(string memory _name) internal whenNotPaused {
         candidates[candidatesCount] = Candidate({
             id: candidatesCount,
             name: _name,
@@ -152,6 +151,7 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     ///@return vote count and winning ID
     function _calcElectionWinner()
         internal
+        whenNotPaused
         returns (uint256, uint256[] memory)
     {
         for (uint256 i; i < candidatesCount; i++) {
@@ -172,13 +172,13 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
 
     /// @notice function to start election
     ///@dev function changes the boolean value of the ACTIVE variable
-    function startElection() public onlyChairman {
+    function startElection() public whenNotPaused onlyChairman {
         Active = true;
     }
 
     /// @notice function to end election
     ///@dev function changes the boolean value of the ENDED variable
-    function endElection() public onlyChairman {
+    function endElection() public whenNotPaused onlyChairman {
         Ended = true;
         _calcElectionWinner();
         emit ElectionEnded(winnerIds, winnerVoteCount);
@@ -197,15 +197,43 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     }
 
     ///@notice function to add teachers to mapping
-    ///@param address of teacher
-    function addTeacher(address _newTeachers) public onlyTeachers(msg.sender) {
-        teachers[_newTeachers] = true;
+    ///@param _newTeacher is the address of a new teacher
+    function addTeacher(address _newTeacher)
+        public
+        whenNotPaused
+        onlyTeachers(msg.sender)
+    {
+        teachers[_newTeacher] = true;
     }
 
     ///@notice function to add teachers to mapping
-    ///@param address of teacher
-    function removeTeacher(address _teacher) public onlyTeachers(msg.sender) {
+    ///@param _teacher is the address of teacher to be removed
+    function removeTeacher(address _teacher)
+        public
+        whenNotPaused
+        onlyTeachers(msg.sender)
+    {
         teachers[_teacher] = false;
+    }
+
+    ///@notice function to pause the contract
+    function pause() public onlyChairman {
+        _pause();
+    }
+
+    ///@notice function to unpause the contract
+    function unpause() public onlyChairman {
+        _unpause();
+    }
+
+   ///@notice function to change chairman
+    /// @param  _newChairman is the new chairman
+    function changeChairman(address _newChairman)
+        public
+        whenNotPaused
+        onlyChairman
+    {
+        chairman = _newChairman;
     }
 
     /// ======================= MODIFIERS =================================
@@ -214,7 +242,7 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
         require(msg.sender == chairman, "only chairman can call this function");
         _;
     }
-    
+
     ///@notice modifier to specify only teachers can call the function
     modifier onlyTeachers(address _user) {
         bool Teachers = teachers[_user];
@@ -242,15 +270,14 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     }
 
     ///======================= EVENTS & ERRORS ==============================
-     ///@notice event to emit when election has ended
+    ///@notice event to emit when election has ended
     event ElectionEnded(uint256[] _winnerIds, uint256 _winnerVoteCount);
     ///@notice event to emit when candidate has been created
     event CandidateCreated(uint256 _candidateId, string _candidateName);
     ///@notice event to emit when a candidate us voted for
     event VoteForCandidate(uint256 _candidateId, uint256 _candidateVoteCount);
 
-
-    ///@notice error message to be caught when conditions aren't fufi/led
+    ///@notice error message to be caught when conditions aren't fufilled
     error ElectionNotStarted();
     error ElectionHasEnded();
 }
