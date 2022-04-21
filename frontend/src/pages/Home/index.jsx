@@ -1,9 +1,9 @@
 import classNames from "classnames";
-import { useStyles } from "./styles";
+import { useStyles } from "../Elections/styles";
 
 import { useGlobalStyles } from "../../styles";
 import { Link } from "react-router-dom";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { Typography } from "@mui/material";
 import { ReactComponent as GoogleLogo } from "../../assets/images/shared/google.svg";
 import { ReactComponent as MicrosoftLogo } from "../../assets/images/shared/microsoft.svg";
@@ -11,11 +11,13 @@ import { ReactComponent as TeslaLogo } from "../../assets/images/shared/tesla.sv
 import { ReactComponent as NvidiaLogo } from "../../assets/images/shared/nvidia.svg";
 import { ReactComponent as OracleLogo } from "../../assets/images/shared/oracle.svg";
 import { ReactComponent as HewlettPackardLogo } from "../../assets/images/shared/hewlett-packard.svg";
+import { AppContext } from '../../context/AppContext';
 
 
 const Home = () => {
   const classes = useStyles();
   const globalStyles = useGlobalStyles();
+  const { currentAccount, connectWallet } = useContext(AppContext);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -63,16 +65,22 @@ const Home = () => {
             )}
             onSubmit={submitHandler}
           >
-            
-            <button
-              className={classNames(
-                globalStyles.darkPinkBg,
-                globalStyles.darkPinkButton,
-                "border-0 outline-none w-full sm:w-auto mt-4 sm:mt-0 rounded-full text-white py-2.5 px-5"
-              )}
-            >
-              Connect Wallet
-            </button>
+             {!currentAccount ? (
+                <button
+                onClick={connectWallet}
+                className={classNames(
+                  globalStyles.darkPinkBg,
+                  globalStyles.darkPinkButton,
+                  classes.scheduleButton,
+                  
+                  "border-0 outline-none rounded-full text-white py-2.5"
+                )}
+              >
+                Connect Wallet
+              </button>
+                  ) : (
+                    ""
+                  )} 
           </form>
          
         </div>
