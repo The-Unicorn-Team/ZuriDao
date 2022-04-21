@@ -7,6 +7,7 @@ export const useStyles = makeStyles(theme => ({//
         backgroundImage: `url(${circlePattern})`,
         backgroundPosition: 'center bottom -227px',
         backgroundSize: 400,
+        position:'relative',
         [theme.breakpoints.up(420)]: {
             backgroundPosition: 'center bottom -324px',
             backgroundSize: 500,

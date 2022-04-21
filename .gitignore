@@ -6,3 +6,4 @@ typechain
 
 #Hardhat files
 cache
+.DS_Store

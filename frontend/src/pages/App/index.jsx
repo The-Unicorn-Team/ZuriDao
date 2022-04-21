@@ -6,6 +6,7 @@ import loadable from '@loadable/component';
 import ScheduleDemo from '../../components/ScheduleDemo'
 import { useEffect } from "react";
 import AOS from 'aos'
+import '../../bootstrap.min.css'
 
 const App = () => {
     const theme = createTheme();
@@ -16,6 +17,9 @@ const App = () => {
     const PricingPage = loadable(() => import(/* webpackChunkName: "PricingPage" */ '../Pricing'));
     const AboutUsPage = loadable(() => import(/* webpackChunkName: "AboutUsPage" */ '../About'));
     const ContactPage = loadable(() => import(/* webpackChunkName: "ContactPage" */ '../Contact'));
+    const ElectionsPage = loadable(() => import('../Elections'));
+    const AddElection = loadable(()=> import('../AddElection'));
+    const Election = loadable(()=> import('../Election'));
 
     useEffect(() => AOS.init(), [])
 
@@ -30,9 +34,11 @@ const App = () => {
                                 <Route exact path="/pricing" element={<PricingPage />} />
                                 <Route exact path="/contact" element={<ContactPage />} />
                                 <Route exact path="/about-us" element={<AboutUsPage />} />
+                                <Route exact path="/elections" element={<ElectionsPage />} />
+                                <Route exact path="/add-election" element={<AddElection/>}/>
+                                <Route exact path="/election" element={<Election/>}/>
                                 <Route exact path="/" element={<HomePage />} />
                             </Routes>
-                            <ScheduleDemo />
                             <Footer />
                         </Router>
                     </AppContextProvider>

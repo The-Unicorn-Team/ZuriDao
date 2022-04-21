@@ -10,7 +10,6 @@ export const useStyles = makeStyles(theme => ({
         backgroundImage: `url(${circlePattern})`,
         backgroundPosition: 'right -141px bottom -28px',
         backgroundSize: 300,
-        position: 'fixed',
         top: 0,
         zIndex: 10,
         [theme.breakpoints.up('sm')]: {
