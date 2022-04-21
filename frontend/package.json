@@ -1,24 +1,14 @@
 {
-  "name": "payapi-multi-page-website",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.7.1",
-    "@emotion/styled": "^11.6.0",
-    "@loadable/component": "^5.15.2",
-    "@mui/icons-material": "^5.3.1",
-    "@mui/material": "^5.3.1",
-    "@mui/styles": "^5.3.0",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
-    "aos": "^2.3.4",
-    "classnames": "^2.3.1",
-    
-    "react-dom": "^17.0.2",
-    "react-hook-form": "^7.25.3",
-    "react-router-dom": "^6.2.1",
-    "react-scripts": "5.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -44,10 +34,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.2",
-    "postcss": "^8.4.5",
-    "tailwindcss": "^3.0.18"
   }
 }
