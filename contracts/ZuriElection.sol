@@ -95,15 +95,15 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     {
         require(
             isValid(hexProof, keccak256(abi.encodePacked(msg.sender))),
-            "Not a part of Allowlist"
+            "sorry, only stakeholders are eligible to vote"
         );
 
         _vote(_candidateId, msg.sender);
     }
 
     /// @notice function to start an election
-    ///@param _nda which is an array candidate information
-    function _setUpElection(string[] memory _nda, string[] memory _candidates)
+    ///@param _prop which is an array candidate information
+    function _setUpElection(string[] memory _prop, string[] memory _candidates)
         internal
         whenNotPaused
     {
@@ -111,14 +111,19 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
             _candidates.length > 0,
             "There should be at least 1 candidate."
         );
-        name = _nda[0];
-        description = _nda[1];
+        require(
+            chairman == msg.sender || teachers[msg.sender] == true,
+            "only teachers/chairman can call this function"
+        );
+
+        name = _prop[0];
+        description = _prop[1];
         for (uint256 i = 0; i < _candidates.length; i++) {
             _addCandidate(_candidates[i]);
         }
     }
 
-    /// =============== INTERNAL FUNCTIONS ================================
+    /// ==================== INTERNAL FUNCTIONS ================================
     ///@notice internal function that allows users vote
     ///@param _candidateId and voter's address
 
@@ -198,21 +203,21 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
 
     ///@notice function to add teachers to mapping
     ///@param _newTeacher is the address of a new teacher
-    function addTeacher(address _newTeacher)
-        public
-        whenNotPaused
-        onlyTeachers(msg.sender)
-    {
+    function addTeacher(address _newTeacher) public whenNotPaused {
+        require(
+            chairman == msg.sender || teachers[msg.sender] == true,
+            "only teachers/chairman can call this function"
+        );
         teachers[_newTeacher] = true;
     }
 
     ///@notice function to add teachers to mapping
     ///@param _teacher is the address of teacher to be removed
-    function removeTeacher(address _teacher)
-        public
-        whenNotPaused
-        onlyTeachers(msg.sender)
-    {
+    function removeTeacher(address _teacher) public whenNotPaused {
+        require(
+            chairman == msg.sender || teachers[msg.sender] == true,
+            "only teachers/chairman can call this function"
+        );
         teachers[_teacher] = false;
     }
 
@@ -226,7 +231,7 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
         _unpause();
     }
 
-   ///@notice function to change chairman
+    ///@notice function to change chairman
     /// @param  _newChairman is the new chairman
     function changeChairman(address _newChairman)
         public

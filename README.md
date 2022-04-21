@@ -59,7 +59,7 @@ Zuri as an organization needs to setup an election for leadership position in it
 To setup the repo, first fork the (The-Unicorn-Team) ZuriDao repo, then clone the forked repository to create a copy on the local machine.
 </p>
 
-    $ git clone https://github.com/EnebeliEmmanuel/ZuriDao.git
+    $ git clone https://github.com/The-Unicorn-Team/ZuriDao
 
 <p align="justify">
 Change directory to the cloned repo and set the original ZuriDao repository as the "upstream" and your forked repository as the "origin" using gitbash.
@@ -238,7 +238,7 @@ $ npx hardhat coverage --network localhost --show-stack-traces
 This Project was created by the members of The-Team-Unicorn during the Blockgames Internship.
 
 <!-- <p align="center" width="100%">
-  <img src="https://drive.google.com/uc?export=view&id=13Gt4morUWHd7QNLk4e6Om7itygJiCOSl" alt="teamresilient"/>
+  <img src="https://drive.google.com/uc?export=view&id=13Gt4morUWHd7QNLk4e6Om7itygJiCOSl" alt="teamunicorn"/>
 </p> -->
 
 #
