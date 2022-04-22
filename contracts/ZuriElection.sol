@@ -17,8 +17,9 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
 
     ///@notice this function replaces the constructor due to the contract being upgradeable
     ///@dev function runs once on deployment
-    function initialize() public initializer {
+    function initialize(bytes32 merkleRoot) public initializer {
         chairman == msg.sender;
+        root == merkleRoot;
         __UUPSUpgradeable_init();
     }
 
@@ -44,8 +45,7 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     string public description;
 
     ///@dev root of the MerkleTree
-    bytes32 public root =
-        0x4c29915a50ec868ab99f5844b969c0ad438aec20e61efe2541dbcaf674cc6356;
+    bytes32 public root;
 
     ///@notice count of candidates
     ///@dev count to keep track of number of candidates
@@ -82,6 +82,8 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
         string name;
         uint256 voteCount;
     }
+
+    
 
     ///================== PUBLIC FUNCTIONS =============================
 
