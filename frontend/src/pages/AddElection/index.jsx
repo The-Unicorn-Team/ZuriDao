@@ -1,5 +1,7 @@
 import classNames from "classnames";
 import { useStyles } from "./styles";
+import { contractAddress, abi } from "../constants/constant";
+import{ethers} from 'ethers'
 
 import { useGlobalStyles } from "../../styles";
 import { Link } from "react-router-dom";
@@ -23,6 +25,14 @@ const AddElection = () => {
   const [candidate, setCandidate] = useState({candidate_name : "", picture : "", manifesto : "", pictureFile : ""})
   const { currentAccount, connectWallet , isStudent } = useContext(AppContext);
   const [preview, setPreview] = useState();
+  const [candidateName, setCandidateName] = useState(" ")
+  const [candidateNames, setCandidateNames] = useState([])
+  const [electionName, setElectionName]=useState(" ")
+  const [description, setDescription] = useState(" ")
+
+  const prop = [electionName, description]
+
+        console.log(prop)
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -38,8 +48,12 @@ const AddElection = () => {
       let candids = candidates;
       candids.push(candidate);
       setCandidates(candids)
-      console.log(candidates, "hello");
-      console.log(candids);
+
+      let candidsName = candidateNames
+      candidsName.push(candidateName);
+      setCandidateNames(candidsName)
+
+
       setShow(false)
       createPreview();
   };
@@ -65,7 +79,20 @@ const AddElection = () => {
     setCandidate(prev => ({
         ...prev,
         [name]: value
-    }))
+      })) 
+
+      setCandidateName(value)
+  }
+  const handleElectionChange = (event) => {
+    const {name, value} = event.target
+    setElectionName(value)
+      
+  }
+
+  const handleDesc = (event) => {
+    const {name, value} = event.target
+    setDescription(value)
+
   }
 
   const handleRemove= (num) => {
@@ -87,7 +114,37 @@ const AddElection = () => {
 
   }
 
+  const setupElection = async(prop,candidateNames) =>{
+    try {
+      const { ethereum } = window;
+  
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(contractAddress, abi.abi, signer);
+  
+        console.log("Going to pop wallet now to pay gas...")
 
+        
+        
+        let setUp = await connectedContract._setUpElection(prop,candidateNames);
+
+          console.log("we are setting up election....................")
+
+          const receipt = await setUp.wait()
+
+          if (receipt.status === 1) {
+            alert("Election successfully setup");}
+  
+      
+  
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      alert(error)
+    }
+  }
 
   return (
     <main>
@@ -106,12 +163,13 @@ const AddElection = () => {
                     <div className="col-6">
                         <div className="mb-3">
                             <label  className="form-label">Election Name</label>
-                            <input type="text" className="form-control" id="formGroupExampleInput" placeholder="Example input placeholder"/>
+                            <input type="text" className="form-control" onChange={handleElectionChange}id="formGroupExampleInput" placeholder="Example input placeholder"/>
                         </div>
                         <div className="mb-3">
                             <label>Brief Description</label>
-                            <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea2"/>
+                            <textarea className="form-control" placeholder="Leave a comment here" onChange={handleDesc} id="floatingTextarea2"/>
                         </div>
+                        
                         <hr/>
                         {!show ? ( <button className="btn btn-small btn-success" onClick={toggleCandidate}>Add Candidate</button>) : (
                             <div>
@@ -131,7 +189,7 @@ const AddElection = () => {
                             </div>
                         )}
 
-                        <button  className="btn btn-lg btn-primary float-right">Add Election</button>
+                        <button  className="btn btn-lg btn-primary float-right" onClick={setupElection}>Setup Election</button>
                        
                         
                     </div>
