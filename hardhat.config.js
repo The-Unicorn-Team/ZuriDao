@@ -1,7 +1,9 @@
-
+require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
+
 require('solidity-coverage');
 const dotenv = require("dotenv");
+require('@openzeppelin/hardhat-upgrades');
 
 dotenv.config();
 const defaultNetwork = "rinkeby";
@@ -26,13 +28,6 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   solidity: "0.8.10",
   defaultNetwork,
   networks: {
-    localhost: {
-      url: "http://localhost:8545",
-      /*      
-        notice no mnemonic here? it will just use account 0 of the hardhat node to deploy
-        (you can put in a mnemonic here to set the deployer locally)
-      */
-    },
     rinkeby: {
       url: process.env.URL,
       accounts: [process.env.KEYS],
