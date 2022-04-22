@@ -87,65 +87,88 @@ const Election = () => {
         )}
       >
         {show ? (
-            <Modal 
+          <Modal
             size="lg"
-          show={show}
-          onHide={() => handleClose(false)}
-          aria-labelledby="example-modal-sizes-title-lg">
+            show={show}
+            onHide={() => handleClose(false)}
+            aria-labelledby="example-modal-sizes-title-lg"
+          >
             <Modal.Header closeButton>
-              <Modal.Title id="example-modal-sizes-title-lg">Candidates Manifesto</Modal.Title>
+              <Modal.Title id="example-modal-sizes-title-lg">
+                Candidates Manifesto
+              </Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-                <h5 className="card-title">Samuel Okpe</h5>
-                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <h5 className="card-title">Samuel Okpe</h5>
+              <p className="card-text">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </p>
             </Modal.Body>
-        </Modal>
-        ) : ("")}
-        
-          
-        
-        {!isStudent ? (
-            <div className="container">
-                <div className="row">
-                  <div className="d-flex justify-content-end">
-                      <button className="btn btn-lg btn-success me-2">Start Election</button>
-                      <button className="btn btn-lg btn-danger me-2">End Election</button>
-                      <button className="btn btn-lg btn-primary me-2">Make Public</button>
-                      <button className="btn btn-lg btn-primary me-2">Make Private</button>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-4">
-                      <div className="card" >
-                      <img src="images/profile.jpg" className="card-img-top" alt="..."/>
-                      <div className="card-body">
-                          <h5 className="card-title">Samuel Okpe</h5>
-                          <span className="display-2">42</span><small>votes</small>
-                          <br></br>
-                          <button className="btn btn-primary btn-lg float-left" onClick={handleShow}>View Candidate</button>
-                          <button className="btn btn-success btn-lg float-right" onClick={handleVote}>Vote Candidate</button>
-                      </div>
-                  </div>
-                  </div>
-                </div>
-
-                
-            </div>
-            
+          </Modal>
         ) : (
-            <div className="container">
-                <div className="row">
-                    <div className="display-3">
-                        This page is only accessible to the chairman and teachers
-                    </div>
-                </div>
+          ""
+        )}
+
+        {!isStudent ? (
+          <div className="container">
+            <div className="row">
+              <div className="d-flex justify-content-end">
+                <button className="btn btn-lg btn-success me-2">
+                  Start Election
+                </button>
+                <button className="btn btn-lg btn-danger me-2">
+                  End Election
+                </button>
+                <button className="btn btn-lg btn-primary me-2">
+                  Make Public
+                </button>
+                <button className="btn btn-lg btn-primary me-2">
+                  Make Private
+                </button>
+              </div>
             </div>
-        )} 
-        
-        
+            <div className="row">
+              <div className="col-4">
+                <div className="card">
+                  <img
+                    src="images/profile.jpg"
+                    className="card-img-top"
+                    alt="..."
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">Samuel Okpe</h5>
+                    <span className="display-2">42</span>
+                    <small>votes</small>
+                    <br></br>
+                    <button
+                      className="btn btn-primary btn-lg m-1 px-1"
+                      onClick={handleShow}
+                    >
+                      View Candidate
+                    </button>
+                    <button
+                      className="btn btn-success btn-lg m-1 px-1 "
+                      onClick={handleVote}
+                    >
+                      Vote Candidate
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="container">
+            <div className="row">
+              <div className="display-3">
+                This page is only accessible to the chairman and teachers
+              </div>
+            </div>
+          </div>
+        )}
       </section>
-     
     </main>
   );
 };
