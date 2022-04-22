@@ -1,5 +1,8 @@
+import { useStyles } from "./styles";
+import Card from "./Card";
+
 import classNames from "classnames";
-import { useStyles } from "../Elections/styles";
+
 
 import { useGlobalStyles } from "../../styles";
 import { Link } from "react-router-dom";
@@ -11,8 +14,7 @@ import { ReactComponent as TeslaLogo } from "../../assets/images/shared/tesla.sv
 import { ReactComponent as NvidiaLogo } from "../../assets/images/shared/nvidia.svg";
 import { ReactComponent as OracleLogo } from "../../assets/images/shared/oracle.svg";
 import { ReactComponent as HewlettPackardLogo } from "../../assets/images/shared/hewlett-packard.svg";
-import { AppContext } from '../../context/AppContext';
-
+import { AppContext } from "../../context/AppContext";
 
 const Home = () => {
   const classes = useStyles();
@@ -25,9 +27,9 @@ const Home = () => {
 
   const ImageContainer = useCallback(
     ({ alt, children, image }) => (
-      <div className={classNames("mb-8 w-1/2", classes.companyImageContainer)}>
-       
-      </div>
+      <div
+        className={classNames("mb-8 w-1/2", classes.companyImageContainer)}
+      ></div>
     ),
     [classes]
   );
@@ -52,7 +54,7 @@ const Home = () => {
         >
           <h1
             className={classNames(
-              "text-center md:text-left font-bold text-4xl leading-9",
+              " md:text-left font-bold text-4xl leading-9",
               globalStyles.sanJuanBlueColor,
               classes.heroTitle
             )}
@@ -60,29 +62,26 @@ const Home = () => {
             We are bringing decentralization to the voting sector, Explore.
           </h1>
           <form
-            className={classNames(
-              "mt-8 sm:flex sm:items-stretch "
-            )}
+            className={classNames("mt-8 sm:flex sm:items-stretch ")}
             onSubmit={submitHandler}
           >
-             {!currentAccount ? (
-                <button
+            {!currentAccount ? (
+              <button
                 onClick={connectWallet}
                 className={classNames(
                   globalStyles.darkPinkBg,
                   globalStyles.darkPinkButton,
                   classes.scheduleButton,
-                  
-                  "border-0 outline-none rounded-full text-white py-2.5"
+
+                  "border-0 outline-none rounded-full text-white px-3 py-2.5"
                 )}
               >
                 Connect Wallet
               </button>
-                  ) : (
-                    ""
-                  )} 
+            ) : (
+              ""
+            )}
           </form>
-         
         </div>
       </section>
       <section
@@ -185,15 +184,23 @@ const Home = () => {
           </Typography>
           <Typography
             component="p"
-            className={classNames(
-              "text-slate-300 text-center md:text-left pt-4"
-            )}
+            className={classNames("text-slate-300  md:text-left pt-4")}
           >
-           One of the reasons that electoral officials have been slow to migrate voting online is fear that election integrity could be compromised by hackers. It seems the headlines are riddled with concerns regarding cybersecurity, so it’s no wonder. But that’s where blockchain comes in, which promises to combine much-needed ballot security with voting convenience.
-
-Blockchain integrates cryptography into software in a unique way.  It creates a tamper-free record that can easily be checked to ensure votes are accurately recorded.
-
-Due to the secure and immutable nature of blockchain, votes may be cast by computer or mobile device instead of having voters show up at a local polling place or cast a mail-in-ballot to be processed manually by election officials. Votes tracked through a blockchain provide for a quicker, tamper-proof way of counting votes, which could lead to greater voter participation, better ballot security, and at lower cost.
+            One of the reasons that electoral officials have been slow to
+            migrate voting online is fear that election integrity could be
+            compromised by hackers. It seems the headlines are riddled with
+            concerns regarding cybersecurity, so it’s no wonder. But that’s
+            where blockchain comes in, which promises to combine much-needed
+            ballot security with voting convenience. Blockchain integrates
+            cryptography into software in a unique way. It creates a tamper-free
+            record that can easily be checked to ensure votes are accurately
+            recorded. Due to the secure and immutable nature of blockchain,
+            votes may be cast by computer or mobile device instead of having
+            voters show up at a local polling place or cast a mail-in-ballot to
+            be processed manually by election officials. Votes tracked through a
+            blockchain provide for a quicker, tamper-proof way of counting
+            votes, which could lead to greater voter participation, better
+            ballot security, and at lower cost.
           </Typography>
           <Link
             to="about-us"
@@ -205,7 +212,6 @@ Due to the secure and immutable nature of blockchain, votes may be cast by compu
           </Link>
         </div>
       </section>
-     
     </main>
   );
 };
