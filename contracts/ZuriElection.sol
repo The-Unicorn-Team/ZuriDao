@@ -5,22 +5,20 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-
 /// @author Wande for Team Unicorn
 /// @title ZuriElection
 /// @notice You can use this contract for election amongst known stakeholders
 /// @dev All function calls are currently implemented without side effects
 contract ZuriElection is Pausable {
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        chairman == msg.sender;
-         Active = false;
+    constructor(bytes32 merkleRoot) {
+        chairman = msg.sender;
+        Active = false;
         Ended = false;
         candidatesCount = 0;
-        
+        root = merkleRoot;
     }
 
- 
     /// =================== VARIABLES ================================
 
     ///@notice address of chairman
@@ -92,7 +90,7 @@ contract ZuriElection is Pausable {
     /// @notice function to start an election
     ///@param _prop which is an array of election information
     function setUpElection(string[] memory _prop, string[] memory _candidates)
-        internal
+        public
         whenNotPaused
     {
         require(_candidates.length > 0, "atleast one person should contest");
@@ -107,13 +105,19 @@ contract ZuriElection is Pausable {
             _addCandidate(_candidates[i]);
         }
     }
-    function makeResultPublic() public view returns (uint256, uint256[] memory){
+
+    function makeResultPublic()
+        public
+        view
+        returns (uint256, uint256[] memory)
+    {
         require(
             chairman == msg.sender || teachers[msg.sender] == true,
             "only teachers/chairman can make results public"
         );
         return (winnerVoteCount, winnerIds);
     }
+
     /// ==================== INTERNAL FUNCTIONS ================================
     ///@notice internal function that allows users vote
     ///@param _candidateId and voter's address
