@@ -1,42 +1,26 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.0;
 
 /// @notice imported contracts from openzepplin to pause, verify proof and upgrade contract
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
 
 /// @author Wande for Team Unicorn
 /// @title ZuriElection
 /// @notice You can use this contract for election amongst known stakeholders
 /// @dev All function calls are currently implemented without side effects
-contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
+contract ZuriElection is Pausable {
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer {}
-
-    ///@notice this function replaces the constructor due to the contract being upgradeable
-    ///@dev function runs once on deployment
-    function initialize(bytes32 merkleRoot) public initializer {
+    constructor() {
         chairman == msg.sender;
-        root == merkleRoot;
-        Active = false;
+         Active = false;
         Ended = false;
         candidatesCount = 0;
-        __UUPSUpgradeable_init();
-        __Pausable_init();
+        
     }
 
-    ///@notice function to call to upgrade contract
-    ///@param newImplementation is the address of new version of this contract
-    ///@dev only chairman can call this function
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        onlyChairman
-        whenNotPaused
-    {}
-
+ 
     /// =================== VARIABLES ================================
 
     ///@notice address of chairman
@@ -107,7 +91,7 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
 
     /// @notice function to start an election
     ///@param _prop which is an array of election information
-    function _setUpElection(string[] memory _prop, string[] memory _candidates)
+    function setUpElection(string[] memory _prop, string[] memory _candidates)
         internal
         whenNotPaused
     {
@@ -123,7 +107,13 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
             _addCandidate(_candidates[i]);
         }
     }
-
+    function makeResultPublic() public view returns (uint256, uint256[] memory){
+        require(
+            chairman == msg.sender || teachers[msg.sender] == true,
+            "only teachers/chairman can make results public"
+        );
+        return (winnerVoteCount, winnerIds);
+    }
     /// ==================== INTERNAL FUNCTIONS ================================
     ///@notice internal function that allows users vote
     ///@param _candidateId and voter's address

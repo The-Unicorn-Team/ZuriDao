@@ -6,13 +6,7 @@ import{ethers} from 'ethers'
 import { useGlobalStyles } from "../../styles";
 import { Link } from "react-router-dom";
 import { useCallback, useContext, useState} from "react";
-import { Typography } from "@mui/material";
-import { ReactComponent as GoogleLogo } from "../../assets/images/shared/google.svg";
-import { ReactComponent as MicrosoftLogo } from "../../assets/images/shared/microsoft.svg";
-import { ReactComponent as TeslaLogo } from "../../assets/images/shared/tesla.svg";
-import { ReactComponent as NvidiaLogo } from "../../assets/images/shared/nvidia.svg";
-import { ReactComponent as OracleLogo } from "../../assets/images/shared/oracle.svg";
-import { ReactComponent as HewlettPackardLogo } from "../../assets/images/shared/hewlett-packard.svg";
+
 import { AppContext } from '../../context/AppContext';
 import PreviewCandidates from "../../components/PreviewCandidates/PreviewCandidates";
 
@@ -23,7 +17,7 @@ const AddElection = () => {
   const [show, setShow] = useState(false);
   const [candidates , setCandidates] = useState([])
   const [candidate, setCandidate] = useState({candidate_name : "", picture : "", manifesto : "", pictureFile : ""})
-  const { currentAccount, connectWallet , isStudent } = useContext(AppContext);
+  const { currentAccount, connectWallet , isStudent, setUpElection } = useContext(AppContext);
   const [preview, setPreview] = useState();
   const [candidateName, setCandidateName] = useState(" ")
   const [candidateNames, setCandidateNames] = useState([])
@@ -113,38 +107,19 @@ const AddElection = () => {
     setPreview(previews)
 
   }
-
-  const setupElection = async(prop,candidateNames) =>{
+  const makeElection = async(e) =>{
     try {
-      const { ethereum } = window;
-  
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(contractAddress, abi.abi, signer);
-  
-        console.log("Going to pop wallet now to pay gas...")
+      e.preventDefault();
 
-        
-        
-        let setUp = await connectedContract._setUpElection(prop,candidateNames);
-
-          console.log("we are setting up election....................")
-
-          const receipt = await setUp.wait()
-
-          if (receipt.status === 1) {
-            alert("Election successfully setup");}
-  
-      
-  
-      } else {
-        console.log("Ethereum object doesn't exist!");
-      }
-    } catch (error) {
-      alert(error)
-    }
+      await setUpElection()
+    
+    
+     
+  } catch (err) {
+      alert("something went wrong")
   }
+  }
+  
 
   return (
     <main>
@@ -189,7 +164,7 @@ const AddElection = () => {
                             </div>
                         )}
 
-                        <button  className="btn btn-lg btn-primary float-right" onClick={setupElection}>Setup Election</button>
+                        <button  className="btn btn-lg btn-primary float-right" onClick={makeElection}>Setup Election</button>
                        
                         
                     </div>
