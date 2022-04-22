@@ -38,7 +38,7 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     ///@notice address of chairman
     address public chairman;
 
-    ///@notice name of the position candidates are vying for standing election
+    ///@notice name of the position candidates are vying for
     string public position;
 
     ///@notice description of position vying for
@@ -83,8 +83,6 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
         uint256 voteCount;
     }
 
-    
-
     ///================== PUBLIC FUNCTIONS =============================
 
     ///@notice function that allows stakeholders vote in an election
@@ -109,10 +107,7 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
         internal
         whenNotPaused
     {
-        require(
-            _candidates.length > 0,
-            "atleast one person should contest"
-        );
+        require(_candidates.length > 0, "atleast one person should contest");
         require(
             chairman == msg.sender || teachers[msg.sender] == true,
             "only teachers/chairman can call this function"
