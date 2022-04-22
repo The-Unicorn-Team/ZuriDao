@@ -2,7 +2,7 @@
 pragma solidity ^0.8.4;
 
 /// @notice imported contracts from openzepplin to pause, verify proof and upgrade contract
-import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -11,7 +11,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 /// @title ZuriElection
 /// @notice You can use this contract for election amongst known stakeholders
 /// @dev All function calls are currently implemented without side effects
-contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
+contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
 
@@ -20,6 +20,9 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     function initialize(bytes32 merkleRoot) public initializer {
         chairman == msg.sender;
         root == merkleRoot;
+        Active = false;
+        Ended = false;
+        candidatesCount = 0;
         __UUPSUpgradeable_init();
     }
 
@@ -49,7 +52,7 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
 
     ///@notice count of candidates
     ///@dev count to keep track of number of candidates
-    uint256 public candidatesCount = 0;
+    uint256 public candidatesCount;
 
     ///@dev mapping of address for teachers
     ///@notice list of teachers
@@ -72,9 +75,9 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     uint256 public winnerVoteCount;
 
     ///@notice boolean to track status of election
-    bool public Active = false;
+    bool public Active;
     ///@notice boolean to track status of election
-    bool public Ended = false;
+    bool public Ended;
 
     ///@dev struct of candidates with variables to track name , id and voteCount
     struct Candidate {
