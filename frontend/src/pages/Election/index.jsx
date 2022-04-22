@@ -1,31 +1,61 @@
 import classNames from "classnames";
 import { useStyles } from "./styles";
+import { ethers } from "ethers"
+
 
 import { useGlobalStyles } from "../../styles";
 import { Link } from "react-router-dom";
 import { useCallback, useContext, useState} from "react";
 import { Typography } from "@mui/material";
-import { ReactComponent as GoogleLogo } from "../../assets/images/shared/google.svg";
-import { ReactComponent as MicrosoftLogo } from "../../assets/images/shared/microsoft.svg";
-import { ReactComponent as TeslaLogo } from "../../assets/images/shared/tesla.svg";
-import { ReactComponent as NvidiaLogo } from "../../assets/images/shared/nvidia.svg";
-import { ReactComponent as OracleLogo } from "../../assets/images/shared/oracle.svg";
-import { ReactComponent as HewlettPackardLogo } from "../../assets/images/shared/hewlett-packard.svg";
 import { AppContext } from '../../context/AppContext';
 import Modal from 'react-bootstrap/Modal';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
+import { contractAddress, abi } from "../constants/constant";
+import { getProviderInfoFromChecksArray } from "web3modal";
 
 
 
 const Election = () => {
   const classes = useStyles();
   const globalStyles = useGlobalStyles();
-  const { currentAccount, connectWallet , isStudent } = useContext(AppContext);
+  const { currentAccount, connectWallet , isStudent , getProof } = useContext(AppContext);
+  const [candidateId, setCandidateId] = useState(0)
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const vote = async() =>{
+    try {
+      const { ethereum } = window;
+  
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(contractAddress, abi.abi, signer);
+  
+        console.log("Going to pop wallet now to pay gas...")
+        const userProof = getProof(currentAccount);
+        let voting = await connectedContract.vote(userProof);
+
+          console.log("we are validating your vote....................")
+
+          const receipt = await voting.wait()
+
+          if (receipt.status === 1) {
+            alert("Voting successful");}
+  
+      
+  
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      alert(error)
+    }
+  }
+  
 
   const handleVote = () => {
     confirmAlert({

@@ -24,6 +24,7 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
         Ended = false;
         candidatesCount = 0;
         __UUPSUpgradeable_init();
+        __Pausable_init();
     }
 
     ///@notice function to call to upgrade contract
@@ -224,11 +225,14 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
     ///@notice function to pause the contract
     function pause() public onlyChairman {
         _pause();
+
+        emit Paused(_msgSender());
     }
 
     ///@notice function to unpause the contract
     function unpause() public onlyChairman {
         _unpause();
+        emit Unpaused(_msgSender());
     }
 
     ///@notice function to change chairman
@@ -261,7 +265,7 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
     }
     ///@notice modifier to check that election is active
     modifier electionIsActive() {
-        require(Active, "Election has not begun!");
+        require(Active, "Please check back, the election has not started!");
         _;
     }
     ///@notice modifier to ensure only specified candidate ID are voted for
@@ -275,7 +279,7 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
     }
 
     ///======================= EVENTS & ERRORS ==============================
-    ///@notice event to emit when election has ended
+    ///@notice event to emit when the contract is unpaused
     event ElectionEnded(uint256[] _winnerIds, uint256 _winnerVoteCount);
     ///@notice event to emit when candidate has been created
     event CandidateCreated(uint256 _candidateId, string _candidateName);
