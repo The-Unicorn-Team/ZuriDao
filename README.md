@@ -72,7 +72,7 @@ To setup the repo, first fork the (The-Unicorn-Team) ZuriDao repo, then clone th
 Change directory to the cloned repo and set the original ZuriDao repository as the "upstream" and your forked repository as the "origin" using gitbash.
 </p>
 
-    $ git remote add upstream https://github.com/Blockgames-The-Unicorn-Team/ZuriSchool.git
+    $ git remote add upstream https://github.com/Blockgames-The-Unicorn-Team/ZuriDao.git
 
 #
 
