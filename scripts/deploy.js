@@ -10,7 +10,7 @@ async function main(){
     const ZuriContract = await ethers.getContractFactory("ZuriElection");
 
     // here we deploy the contract
-    const Zuri = await ZuriContract.deploy();
+    const Zuri = await ZuriContract.deploy('0x4c29915a50ec868ab99f5844b969c0ad438aec20e61efe2541dbcaf674cc6356');
 
     // Wait for it to finish deploying
   await Zuri.deployed();
