@@ -38,8 +38,8 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     ///@notice address of chairman
     address public chairman;
 
-    ///@notice name of the candidates standing election
-    string public name;
+    ///@notice name of the position candidates are vying for standing election
+    string public position;
 
     ///@notice description of position vying for
     string public description;
@@ -104,7 +104,7 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     }
 
     /// @notice function to start an election
-    ///@param _prop which is an array candidate information
+    ///@param _prop which is an array of election information
     function _setUpElection(string[] memory _prop, string[] memory _candidates)
         internal
         whenNotPaused
@@ -118,7 +118,7 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
             "only teachers/chairman can call this function"
         );
 
-        name = _prop[0];
+        position = _prop[0];
         description = _prop[1];
         for (uint256 i = 0; i < _candidates.length; i++) {
             _addCandidate(_candidates[i]);
