@@ -38,8 +38,8 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     ///@notice address of chairman
     address public chairman;
 
-    ///@notice name of the candidates standing election
-    string public name;
+    ///@notice name of the position candidates are vying for standing election
+    string public position;
 
     ///@notice description of position vying for
     string public description;
@@ -104,21 +104,21 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
     }
 
     /// @notice function to start an election
-    ///@param _prop which is an array candidate information
+    ///@param _prop which is an array of election information
     function _setUpElection(string[] memory _prop, string[] memory _candidates)
         internal
         whenNotPaused
     {
         require(
             _candidates.length > 0,
-            "There should be at least 1 candidate."
+            "atleast one person should contest"
         );
         require(
             chairman == msg.sender || teachers[msg.sender] == true,
             "only teachers/chairman can call this function"
         );
 
-        name = _prop[0];
+        position = _prop[0];
         description = _prop[1];
         for (uint256 i = 0; i < _candidates.length; i++) {
             _addCandidate(_candidates[i]);
@@ -162,13 +162,13 @@ contract ZuriElection is Pausable, Initializable, UUPSUpgradeable {
         returns (uint256, uint256[] memory)
     {
         for (uint256 i; i < candidatesCount; i++) {
-            ///@notice If we have a larger value, update winnerVoteCount, and reset winnerId
+            ///@notice this handles the winner vote count
             if (candidates[i].voteCount > winnerVoteCount) {
                 winnerVoteCount = candidates[i].voteCount;
                 delete winnerIds;
                 winnerIds.push(candidates[i].id);
             }
-            ///@notice If we encounter another candidate that has the maximum number of votes, we have a tie, and update winnerIds
+            ///@notice this handles ties
             else if (candidates[i].voteCount == winnerVoteCount) {
                 winnerIds.push(candidates[i].id);
             }
