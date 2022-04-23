@@ -143,6 +143,8 @@ contract ZuriElection is Pausable {
         return (winnerVoteCount, winnerIds);
     }
 
+    
+
     /// ==================== INTERNAL FUNCTIONS ================================
     ///@notice internal function that allows users vote
     ///@param _candidateId and voter's address

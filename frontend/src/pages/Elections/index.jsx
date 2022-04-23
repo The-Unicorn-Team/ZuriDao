@@ -3,22 +3,17 @@ import { useStyles } from "./styles";
 
 import { useGlobalStyles } from "../../styles";
 import { Link } from "react-router-dom";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useEffect , useState } from "react";
 import { Typography } from "@mui/material";
-import { ReactComponent as GoogleLogo } from "../../assets/images/shared/google.svg";
-import { ReactComponent as MicrosoftLogo } from "../../assets/images/shared/microsoft.svg";
-import { ReactComponent as TeslaLogo } from "../../assets/images/shared/tesla.svg";
-import { ReactComponent as NvidiaLogo } from "../../assets/images/shared/nvidia.svg";
-import { ReactComponent as OracleLogo } from "../../assets/images/shared/oracle.svg";
-import { ReactComponent as HewlettPackardLogo } from "../../assets/images/shared/hewlett-packard.svg";
+
 import { AppContext } from '../../context/AppContext';
 
 
 const Home = () => {
   const classes = useStyles();
   const globalStyles = useGlobalStyles();
-  const { currentAccount, connectWallet , isStudent } = useContext(AppContext);
-
+  const { currentAccount, connectWallet , isStudent , getCandidates} = useContext(AppContext);
+  
   const submitHandler = (event) => {
     event.preventDefault();
   };
@@ -31,6 +26,8 @@ const Home = () => {
     ),
     [classes]
   );
+  
+
 
   return (
     <main>

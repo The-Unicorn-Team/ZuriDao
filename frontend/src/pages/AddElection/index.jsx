@@ -1,16 +1,12 @@
 import classNames from "classnames";
 import { useStyles } from "./styles";
+import { contractAddress, abi } from "../constants/constant";
+import{ethers} from 'ethers'
 
 import { useGlobalStyles } from "../../styles";
 import { Link } from "react-router-dom";
 import { useCallback, useContext, useState} from "react";
-import { Typography } from "@mui/material";
-import { ReactComponent as GoogleLogo } from "../../assets/images/shared/google.svg";
-import { ReactComponent as MicrosoftLogo } from "../../assets/images/shared/microsoft.svg";
-import { ReactComponent as TeslaLogo } from "../../assets/images/shared/tesla.svg";
-import { ReactComponent as NvidiaLogo } from "../../assets/images/shared/nvidia.svg";
-import { ReactComponent as OracleLogo } from "../../assets/images/shared/oracle.svg";
-import { ReactComponent as HewlettPackardLogo } from "../../assets/images/shared/hewlett-packard.svg";
+
 import { AppContext } from '../../context/AppContext';
 import PreviewCandidates from "../../components/PreviewCandidates/PreviewCandidates";
 
@@ -21,8 +17,16 @@ const AddElection = () => {
   const [show, setShow] = useState(false);
   const [candidates , setCandidates] = useState([])
   const [candidate, setCandidate] = useState({candidate_name : "", picture : "", manifesto : "", pictureFile : ""})
-  const { currentAccount, connectWallet , isStudent } = useContext(AppContext);
+  const { currentAccount, connectWallet , isStudent, setUpElection } = useContext(AppContext);
   const [preview, setPreview] = useState();
+  const [candidateName, setCandidateName] = useState(" ")
+  const [candidateNames, setCandidateNames] = useState([])
+  const [electionName, setElectionName]=useState(" ")
+  const [description, setDescription] = useState(" ")
+
+  const prop = [electionName, description]
+
+        console.log(prop)
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -38,8 +42,12 @@ const AddElection = () => {
       let candids = candidates;
       candids.push(candidate);
       setCandidates(candids)
-      console.log(candidates, "hello");
-      console.log(candids);
+
+      let candidsName = candidateNames
+      candidsName.push(candidateName);
+      setCandidateNames(candidsName)
+
+
       setShow(false)
       createPreview();
   };
@@ -65,7 +73,20 @@ const AddElection = () => {
     setCandidate(prev => ({
         ...prev,
         [name]: value
-    }))
+      })) 
+
+      setCandidateName(value)
+  }
+  const handleElectionChange = (event) => {
+    const {name, value} = event.target
+    setElectionName(value)
+      
+  }
+
+  const handleDesc = (event) => {
+    const {name, value} = event.target
+    setDescription(value)
+
   }
 
   const handleRemove= (num) => {
@@ -86,8 +107,20 @@ const AddElection = () => {
     setPreview(previews)
 
   }
+  const makeElection = async(e) =>{
+    try {
+      e.preventDefault();
 
-
+      await setUpElection(prop, candidateNames)
+       
+    
+     
+  } catch (error) {
+      alert(error)
+      console.log(error)
+  }
+  }
+  
 
   return (
     <main>
@@ -106,12 +139,13 @@ const AddElection = () => {
                     <div className="col-6">
                         <div className="mb-3">
                             <label  className="form-label">Election Name</label>
-                            <input type="text" className="form-control" id="formGroupExampleInput" placeholder="Example input placeholder"/>
+                            <input type="text" className="form-control" onChange={handleElectionChange}id="formGroupExampleInput" placeholder="Example input placeholder"/>
                         </div>
                         <div className="mb-3">
                             <label>Brief Description</label>
-                            <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea2"/>
+                            <textarea className="form-control" placeholder="Leave a comment here" onChange={handleDesc} id="floatingTextarea2"/>
                         </div>
+                        
                         <hr/>
                         {!show ? ( <button className="btn btn-small btn-success" onClick={toggleCandidate}>Add Candidate</button>) : (
                             <div>
@@ -131,7 +165,7 @@ const AddElection = () => {
                             </div>
                         )}
 
-                        <button  className="btn btn-lg btn-primary float-right">Add Election</button>
+                        <button  className="btn btn-lg btn-primary float-right" onClick={makeElection}>Setup Election</button>
                        
                         
                     </div>
