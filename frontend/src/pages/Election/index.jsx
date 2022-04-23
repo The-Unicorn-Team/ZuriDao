@@ -11,7 +11,8 @@ import { AppContext } from '../../context/AppContext';
 import Modal from 'react-bootstrap/Modal';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
-import { contractAddress, abi } from "../constants/constant";
+import { contractAddress } from "../constants/constant";
+import abi from "../constants/abi.json";
 import { getProviderInfoFromChecksArray } from "web3modal";
 
 

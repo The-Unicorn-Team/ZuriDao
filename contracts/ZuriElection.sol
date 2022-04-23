@@ -69,7 +69,18 @@ contract ZuriElection is Pausable {
         uint256 voteCount;
     }
 
+    
     ///================== PUBLIC FUNCTIONS =============================
+
+    function getCandidates() public view  returns (Candidate[] memory) {
+        Candidate[] memory id = new Candidate[] (candidatesCount);
+        for(uint i=0; i < candidatesCount; i++){
+            Candidate storage candidate = candidates[i];
+            id[i] = candidate;
+
+        }
+        return id;
+    }
 
     ///@notice function that allows stakeholders vote in an election
     ///@param _candidateId the ID of the candidate and hexProof of the voting address
@@ -93,11 +104,13 @@ contract ZuriElection is Pausable {
         public
         whenNotPaused
     {
+
         require(_candidates.length > 0, "atleast one person should contest");
         require(
             chairman == msg.sender || teachers[msg.sender] == true,
             "only teachers/chairman can call this function"
         );
+        
 
         position = _prop[0];
         description = _prop[1];
