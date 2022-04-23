@@ -34,7 +34,7 @@ const Header = () => {
         }
     }, [ classes ]);
 
-    const { currentAccount, connectWallet } = useContext(AppContext);
+    const { currentAccount, connectWallet, getMerkleProof } = useContext(AppContext);
 
     const[ shortenedAddress, setShortenedAddress ] = useState("");
 

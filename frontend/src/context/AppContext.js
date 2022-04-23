@@ -55,6 +55,12 @@ export const AppContextProvider = ({ children }) => {
       }
     };
 
+    const getMerkleProof = (addr) =>{
+      return addr;
+    }
+
+
+
     useEffect(() => {
       checkIfWalletIsConnect();
     }, []);
@@ -65,6 +71,6 @@ export const AppContextProvider = ({ children }) => {
 
     return (
         <AppContext.Provider value={{ currentAccount,
-            connectWallet, isStudent }}>{ children }</AppContext.Provider>
+            connectWallet, isStudent, getMerkleProof }}>{ children }</AppContext.Provider>
     );
 };
