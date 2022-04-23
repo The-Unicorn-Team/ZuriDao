@@ -72,6 +72,7 @@ contract ZuriElection is Pausable {
     
     ///================== PUBLIC FUNCTIONS =============================
 
+    ///@notice function that return list of candidates
     function getCandidates() public view  returns (Candidate[] memory) {
         Candidate[] memory id = new Candidate[] (candidatesCount);
         for(uint i=0; i < candidatesCount; i++){
