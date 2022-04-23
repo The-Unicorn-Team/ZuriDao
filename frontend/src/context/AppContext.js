@@ -1,7 +1,8 @@
 import { createContext, useState, useEffect} from 'react';
 import {MerkleTree} from "merkletreejs"
 import {keccak256} from "keccak256"
-import { contractAddress, abi } from "../pages/constants/constant";
+import { contractAddress } from "../pages/constants/constant";
+import abi from "../pages/constants/abi.json";
 import { ethers } from 'ethers';
 
 export const AppContext = createContext();
@@ -38,11 +39,11 @@ export const AppContextProvider = ({ children }) => {
       }
     }
 
-    const setUpElection = async(prop, candidadateNames) =>{
+    const setUpElection = async(prop, candidateNames) =>{
       const contract = createEthereumContract();
 
       try {
-        let result = await contract._setUpElection(prop, candidadateNames);
+        let result = await contract.setUpElection(prop, candidateNames);
         const receipt = await result.wait();
         if (receipt.status === 1) {
          alert("success");}
@@ -53,6 +54,20 @@ export const AppContextProvider = ({ children }) => {
       }
     }
 
+    const makeResultsPublic = async() =>{
+      const contract = createEthereumContract();
+
+      try {
+        let result = await contract.makeResultPublic();
+        const receipt = await result.wait();
+        if (receipt.status === 1) {
+         alert("success");}
+          }
+      catch(error){
+        alert(error)
+      
+      }
+    }
     const startElection = async() =>{
       const contract = createEthereumContract();
 
@@ -226,6 +241,6 @@ export const AppContextProvider = ({ children }) => {
 
     return (
         <AppContext.Provider value={{ currentAccount,
-            connectWallet, setUpElection,   getProof,vote, startElection,endElection,removeTeacher,addTeacher,changeChairman,pauseContract, unPauseContract, isStudent }}>{ children }</AppContext.Provider>
+            connectWallet, setUpElection, makeResultsPublic,  getProof,vote, startElection,endElection,removeTeacher,addTeacher,changeChairman,pauseContract, unPauseContract, isStudent }}>{ children }</AppContext.Provider>
     );
 };

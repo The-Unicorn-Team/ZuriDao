@@ -111,12 +111,13 @@ const AddElection = () => {
     try {
       e.preventDefault();
 
-      await setUpElection()
-    
+      await setUpElection(prop, candidateNames)
+       
     
      
-  } catch (err) {
-      alert("something went wrong")
+  } catch (error) {
+      alert(error)
+      console.log(error)
   }
   }
   
