@@ -51,7 +51,16 @@ const Header = () => {
 
   const { currentAccount, connectWallet } = useContext(AppContext);
 
+<<<<<<< HEAD
+    const { currentAccount, connectWallet, getMerkleProof } = useContext(AppContext);
+
+    const[ shortenedAddress, setShortenedAddress ] = useState("");
+
+  useEffect(()=>{
+    setShortenedAddress(`${currentAccount.toString().slice(0, 5)}...${currentAccount.toString().slice(currentAccount.length - 4)}`); 
+=======
   const [shortenedAddress, setShortenedAddress] = useState("");
+>>>>>>> 4fdd20a079d0e26f5c37ad4371d76150d6afb6a8
 
   useEffect(() => {
     setShortenedAddress(

@@ -1,3 +1,5 @@
+artifacts
+.openzeppelin
 node_modules
 .env
 coverage
