@@ -37,6 +37,8 @@ contract ZuriElection is Pausable {
     ///@dev count to keep track of number of candidates
     uint256 public candidatesCount;
 
+    ///@notice 
+    uint256 public startTimer;
     ///@dev mapping of address for teachers
     ///@notice list of teachers
     mapping(address => bool) public teachers;
@@ -74,13 +76,13 @@ contract ZuriElection is Pausable {
 
     ///@notice function that return list of candidates
     function getCandidates() public view  returns (Candidate[] memory) {
-        Candidate[] memory id = new Candidate[] (candidatesCount);
+        Candidate[] memory contestants = new Candidate[] (candidatesCount);
         for(uint i=0; i < candidatesCount; i++){
             Candidate storage candidate = candidates[i];
-            id[i] = candidate;
+            contestants[i] = candidate;
 
         }
-        return id;
+        return contestants;
     }
 
     ///@notice function that allows stakeholders vote in an election

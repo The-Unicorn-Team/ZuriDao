@@ -28,8 +28,7 @@ const Election = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  console.log(contenders)
-
+ 
 
   const handleVote = () => {
   confirmAlert({
@@ -53,7 +52,7 @@ buttons: [
 
     const contestants = await getCandidates()
     setContenders(contestants)
-  console.log(contestants)
+  
      } 
   
      useEffect(()=>{
@@ -119,7 +118,10 @@ buttons: [
 
             <div className="row">
             
-                <div className="col-4">
+                { contenders.map((contestant,key )=>{
+                  return(
+                    <div className="col-4" key = {key}>
+                      
                 <div className="card">
                   <img
                     src="images/profile.jpg"
@@ -127,9 +129,9 @@ buttons: [
                     alt="..."
                   />
                   <div className="card-body">
-                    <h5 className="card-title"></h5>
-                    <span className="display-2"></span>
-                    <small>votes</small>
+                    <h5 className="card-title">ID: {(contestant.id).toNumber()}</h5>
+                    <span className="display-2">NAME: {contestant.name}</span>
+                    <small>VOTECOUNT: {(contestant.voteCount).toNumber()}</small>
                     <br></br>
                     <button
                       className="btn btn-primary btn-lg m-1 px-1"
@@ -146,6 +148,8 @@ buttons: [
                   </div>
                 </div>
               </div>
+                  )
+                }) }
               
             </div>
           </div>

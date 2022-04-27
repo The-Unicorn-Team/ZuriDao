@@ -44,6 +44,8 @@ export const AppContextProvider = ({ children }) => {
 
       try {
         let result = await contract.getCandidates();
+
+        return result
                   }
       catch(error){
         alert(error)
