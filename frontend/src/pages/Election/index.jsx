@@ -63,9 +63,10 @@ const Election = () => {
   //  get all candidates
   const getAllCandidates = async () => {
     const contract = createEthereumContract()
-
+console.log(contract)
     try {
       return await contract.getCandidates()
+
     }
 
     catch (error) {
@@ -90,6 +91,21 @@ const Election = () => {
   const start = async () => {
     await startElection()
 
+  }
+
+  const voteCandidate = async (id) => {
+    const contract = createEthereumContract()
+
+    try{
+      let root = []
+      const merkleRoot = await contract.root()
+      root.push(ethers.utils.keccak256(merkleRoot))
+      console.log(root)
+      console.log(contract.vote(id, root))
+      // console.log(await contract.root())
+    } catch(error){
+      console.log(error)
+    }
   }
 
 
@@ -138,8 +154,8 @@ const Election = () => {
                 <p className="text-gray-700 text-base">{contender.votes} votes</p>
               </div>
               <div className="px-2 flex pt-2 pb-2">
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">View Candidate</span>
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Vote Candidate</span>
+                <span onClick={()=>console.log("view candidate")} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">View Candidate</span>
+                <span onClick={()=> voteCandidate(contender.id, contender.name, contender.votes)} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Vote Candidate</span>
               </div>
             </div>
 
