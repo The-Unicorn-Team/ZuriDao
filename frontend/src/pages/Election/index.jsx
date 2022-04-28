@@ -25,6 +25,7 @@ const Election = () => {
   const [show, setShow] = useState(false);
   const [contenders, setContenders] = useState([]);
   const [contract, setContract] = useState("");
+  const [candidatesBool, showCandidates] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -81,7 +82,7 @@ const Election = () => {
     result.map((item) => {
       candidateArray.push({ id: Number(ethers.utils.hexValue(item.id._hex).slice(2)), name: item.name, votes: Number(ethers.utils.hexValue(item.voteCount._hex).slice(2)), })
       setContenders(candidateArray)
-      console.log(contenders)
+      // console.log(contenders)
     })
 
   }
@@ -94,67 +95,58 @@ const Election = () => {
 
   useEffect(() => {
     fetch()
-  }, [])
+  }, [showCandidates])
 
   return (
     <main>
-     {
-        contenders.map((cand, id) => {
-          return (
-
-            <div key={id} className="col-4">
-              <div className="card">
-                <img
-                  src="images/profile.jpg"
-                  className="card-img-top"
-                  alt={cand.name}
-                />
-                {/* Modal */}
-                {show && (
-                  <Modal
-                    size="lg"
-                    show={show}
-                    onHide={() => handleClose(false)}
-                    aria-labelledby="example-modal-sizes-title-lg"
-                    key={cand.id}
-                  >
-                    <Modal.Header closeButton>
-                      <Modal.Title id="example-modal-sizes-title-lg">
-                        Candidates Manifesto
-                      </Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                      <h5 className="card-title">{cand.name}</h5>
-                      <p className="card-text">
-                        This candidate has a vote count of {cand.votes}
-                      </p>
-                    </Modal.Body>
-                  </Modal>
-                )}
-                <div className="card-body">
-                  <h5 className="card-title"> NAME: {cand.name}</h5>
-                  <span className="display-2">VOTECOUNT: {cand.count}</span>
-                  {/* <small>ID: {cand.id}</small> */}
-                  <br></br>
-                  <button
-                    className="btn btn-primary btn-lg m-1 px-1"
-                    onClick={() => setShow(true)}
-                  >
-                    View Candidate
-                  </button>
-                  <button
-                    className="btn btn-success btn-lg m-1 px-1 "
-                    onClick={fetch}
-                  >
-                    Vote Candidate
-                  </button>
-                </div>
+      <section
+        className={classNames(
+          globalStyles.px,
+          classes.hero,
+          "bg-no-repeat flex flex-col pb-2"
+        )}
+      >
+        <div className="container">
+          <div className="row">
+            <div className="d-flex justify-content-end">
+              <button className="btn btn-lg btn-success me-2" onClick={start}>
+                Start Election
+              </button>
+              <button className="btn btn-lg btn-danger me-2">
+                End Election
+              </button>
+              <button className="btn btn-lg btn-danger me-2" onClick={() => showCandidates(true)}>
+                Get Candidates
+              </button>
+              <button className="btn btn-lg btn-primary me-2">
+                Make Public
+              </button>
+              <button className="btn btn-lg btn-primary me-2">
+                Make Private
+              </button>
+            </div>
+          </div>
+        </div>
+        {/* {console.log(contenders)} */}
+        {/* {console.log(candidatesBool)} */}
+        <div className="grid grid-cols-3 gap-4 py-5">
+          {candidatesBool && contenders.map((contender, index) => (
+            <div key={index} className="max-w-sm basis-1/3 rounded shadow-lg">
+              <img className="w-full" src="images/profile.jpg" alt={`${contender.name} with ${contender.count} votes`} />
+              <div className="px-6 py-2">
+                <div className="font-bold text-xl mb-2">{contender.name}</div>
+                <p className="text-gray-700 text-base">{contender.votes} votes</p>
+              </div>
+              <div className="px-2 flex pt-2 pb-2">
+                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">View Candidate</span>
+                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Vote Candidate</span>
               </div>
             </div>
-          )
-        })
-      }
+
+          ))
+          }
+        </div>
+      </section>
     </main>
   );
 };
