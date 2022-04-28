@@ -24,7 +24,7 @@ const App = () => {
     useEffect(() => AOS.init(), [])
 
     return (
-        <>
+        <div className="min-h-screen">
             <StylesProvider injectFirst>
                 <ThemeProvider theme={theme}>
                     <AppContextProvider>
@@ -39,12 +39,12 @@ const App = () => {
                                 <Route exact path="/election" element={<Election/>}/>
                                 <Route exact path="/" element={<HomePage />} />
                             </Routes>
-                            <Footer />
+                            {/* <Footer /> */}
                         </Router>
                     </AppContextProvider>
                 </ThemeProvider>
             </StylesProvider>
-        </>
+        </div>
     )
 };
 

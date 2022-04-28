@@ -74,7 +74,7 @@ const Election = () => {
   }
 
   const fetch = async () => {
-handleShow();
+    // handleShow();
     let candidateArray = []
 
     const result = await getAllCandidates()
@@ -98,111 +98,63 @@ handleShow();
 
   return (
     <main>
-      <section
-        className={classNames(
-          globalStyles.px,
-          classes.hero,
-          "bg-no-repeat flex flex-col pb-2"
-        )}
-      >
-        {show ? (
+     {
+        contenders.map((cand, id) => {
+          return (
 
-          <Modal
-            size="lg"
-            show={show}
-            onHide={() => handleClose(false)}
-            aria-labelledby="example-modal-sizes-title-lg"
-          >
-            <Modal.Header closeButton>
-              <Modal.Title id="example-modal-sizes-title-lg">
-                Candidates Manifesto
-              </Modal.Title>
-            </Modal.Header>
+            <div key={id} className="col-4">
+              <div className="card">
+                <img
+                  src="images/profile.jpg"
+                  className="card-img-top"
+                  alt={cand.name}
+                />
+                {/* Modal */}
+                {show && (
+                  <Modal
+                    size="lg"
+                    show={show}
+                    onHide={() => handleClose(false)}
+                    aria-labelledby="example-modal-sizes-title-lg"
+                    key={cand.id}
+                  >
+                    <Modal.Header closeButton>
+                      <Modal.Title id="example-modal-sizes-title-lg">
+                        Candidates Manifesto
+                      </Modal.Title>
+                    </Modal.Header>
 
-            <Modal.Body>
-              <h5 className="card-title">SAMUEL</h5>
-              <p className="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-            </Modal.Body>
-          </Modal>
-
-        ) : (
-          ""
-        )}
-
-        {!isStudent ? (
-          <div className="container">
-            <div className="row">
-              <div className="d-flex justify-content-end">
-                <button className="btn btn-lg btn-success me-2" onClick={start}>
-                  Start Election
-                </button>
-                <button className="btn btn-lg btn-danger me-2">
-                  End Election
-                </button>
-                <button className="btn btn-lg btn-danger me-2" onClick={fetch}>
-                  Get Candidates
-                </button>
-                <button className="btn btn-lg btn-primary me-2">
-                  Make Public
-                </button>
-                <button className="btn btn-lg btn-primary me-2">
-                  Make Private
-                </button>
+                    <Modal.Body>
+                      <h5 className="card-title">{cand.name}</h5>
+                      <p className="card-text">
+                        This candidate has a vote count of {cand.votes}
+                      </p>
+                    </Modal.Body>
+                  </Modal>
+                )}
+                <div className="card-body">
+                  <h5 className="card-title"> NAME: {cand.name}</h5>
+                  <span className="display-2">VOTECOUNT: {cand.count}</span>
+                  {/* <small>ID: {cand.id}</small> */}
+                  <br></br>
+                  <button
+                    className="btn btn-primary btn-lg m-1 px-1"
+                    onClick={() => setShow(true)}
+                  >
+                    View Candidate
+                  </button>
+                  <button
+                    className="btn btn-success btn-lg m-1 px-1 "
+                    onClick={fetch}
+                  >
+                    Vote Candidate
+                  </button>
+                </div>
               </div>
             </div>
-
-            <div className="row">
-              {
-                contenders.map((cand, id) => {
-                  return (
-
-                    <div key={id} className="col-4">
-                      <div className="card">
-                        <img
-                          src="images/profile.jpg"
-                          className="card-img-top"
-                          alt="..."
-                        />
-                        <div className="card-body">
-                          <h5 className="card-title"> NAME: {cand.name}</h5>
-                          <span className="display-2">VOTECOUNT: {cand.count}</span>
-                          <small>ID: {cand.id}</small>
-                          <br></br>
-                          <button
-                            className="btn btn-primary btn-lg m-1 px-1"
-                            onClick={handleShow}
-                          >
-                            View Candidate
-                          </button>
-                          <button
-                            className="btn btn-success btn-lg m-1 px-1 "
-                            onClick={fetch}
-                          >
-                            Vote Candidate
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })
-              }
-            </div>
-
-
-          </div>
-        ) : (
-          <div className="container">
-            <div className="row">
-              <div className="display-3">
-                This page is only accessible to the chairman and teachers
-              </div>
-            </div>
-          </div>
-        )}
-      </section>
+          )
+        })
+      }
     </main>
   );
 };
