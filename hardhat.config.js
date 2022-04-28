@@ -32,6 +32,18 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
       url: process.env.URL,
       accounts: [process.env.KEYS],
     },
+    ropsten: {
+      url: process.env.URL,
+      accounts: [process.env.KEYS],
+    },
+    mumbai: {
+      url: process.env.URL,
+      accounts: [process.env.KEYS],
+    },
+    localhost: {
+      url: "http://127.0.0.1:8545",
+      accounts: [process.env.KEYS],
+    },
   },
   etherscan: {
     apiKey: process.env.API,
