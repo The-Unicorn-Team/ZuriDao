@@ -83,22 +83,7 @@ const Election = () => {
 
         {!isStudent ? (
           <div className="container">
-            <div className="row">
-              <div className="d-flex justify-content-end">
-                <button className="btn btn-lg btn-success me-2">
-                  Start Election
-                </button>
-                <button className="btn btn-lg btn-danger me-2">
-                  End Election
-                </button>
-                <button className="btn btn-lg btn-primary me-2">
-                  Make Public
-                </button>
-                <button className="btn btn-lg btn-primary me-2">
-                  Make Private
-                </button>
-              </div>
-            </div>
+           
             <div className="row">
               <div className="col-4">
                 <div className="card">
