@@ -45,12 +45,57 @@ describe("ZuriElection", function () {
     const ZuriElection = await ethers.getContractFactory("ZuriElection");
 
     console.log("deploying ZuriElection contract>>>>>>>>>>>>>")
-      const proxy = await upgrades.deployProxy(ZuriElection, [merkleroot]);
+      const proxy = await ZuriElection.deploy(merkleroot);
       console.log(merkleroot);
-      await proxy.deployed();
+      contract = await proxy.deployed();
 
       console.log("ZuriElection Contract Address is...\n", proxy.address);
   });
 });
+
+
+
+
+describe("Start and End Election", function () {
+  it("Non Chairman Should not be to start Election", async function () {
+    await expect(contract.connect(stakeholders[8]).startElection()).to.be.revertedWith("only chairman can call this function");
+  });
+
+  it("Chairman Should be to start Election", async function () {
+    const addteacher = await contract.connect(stakeholders[0]).startElection();
+    const txResult = await addteacher.wait();
+    expect(txResult.status).to.equal(1);
+  });
+
+  it("Non Chairman Should not be to end Election", async function () {
+    await expect(contract.connect(stakeholders[8]).endElection()).to.be.revertedWith("only chairman can call this function");
+  });
+
+  it("Chairman Should be to end Election", async function () {
+    const addteacher = await contract.connect(stakeholders[0]).endElection();
+    const txResult = await addteacher.wait();
+    expect(txResult.status).to.equal(1);
+  });
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

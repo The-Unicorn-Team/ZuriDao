@@ -1,26 +1,18 @@
-import classNames from 'classnames';
-import { useStyles } from './styles';
+import classNames from "classnames";
+import { useStyles } from "./styles";
 
-import { useGlobalStyles } from '../../styles';
-import { Link } from 'react-router-dom';
-import { useCallback, useContext, useState } from 'react';
+import { useGlobalStyles } from "../../styles";
+import { Link } from "react-router-dom";
+import { useCallback, useContext , useState } from "react";
 import { AppContext } from '../../context/AppContext';
+
 
 const Home = () => {
   const classes = useStyles();
   const globalStyles = useGlobalStyles();
-  const {
-    currentAccount,
-    connectWallet,
-    isStudent,
-    addTeacher,
-    changeChairman,
-    removeTeacher,
-    pauseContract,
-    unPauseContract,
-  } = useContext(AppContext);
-  const [address, setAddress] = useState('');
-  const [chairman, setChairman] = useState('');
+  const { currentAccount, connectWallet , isStudent, addTeacher, changeChairman, removeTeacher,pauseContract,unPauseContract } = useContext(AppContext);
+  const[address, setAddress] = useState("")
+  const [chairman, setChairman] = useState("")
   const submitHandler = (event) => {
     event.preventDefault();
   };

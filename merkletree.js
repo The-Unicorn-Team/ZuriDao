@@ -22,6 +22,8 @@ const test = keccak256("0x5d16FA7F1f7513e4603103dc353A284aA96BA7f4")
 const hexProof = merkleTree.getHexProof(test);
 
 const buf2hex = x => '0x' + x.toString('hex')
+
+console.log("this is the root\n", buf2hex(rootHash))
 console.log("this is the proof\n", hexProof)
 
 console.log("testing a scenario")

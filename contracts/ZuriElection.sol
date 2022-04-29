@@ -1,47 +1,32 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.0;
 
 /// @notice imported contracts from openzepplin to pause, verify proof and upgrade contract
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 /// @author Wande for Team Unicorn
 /// @title ZuriElection
 /// @notice You can use this contract for election amongst known stakeholders
 /// @dev All function calls are currently implemented without side effects
-contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
+contract ZuriElection is Pausable {
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer {}
-
-    ///@notice this function replaces the constructor due to the contract being upgradeable
-    ///@dev function runs once on deployment
-    function initialize(bytes32 merkleRoot) public initializer {
-        chairman == msg.sender;
-        root == merkleRoot;
+    constructor(bytes32 merkleRoot) {
+        chairman = msg.sender;
         Active = false;
         Ended = false;
+        Created = false;
         candidatesCount = 0;
-        __UUPSUpgradeable_init();
+        root = merkleRoot;
+        publicState = false;
     }
-
-    ///@notice function to call to upgrade contract
-    ///@param newImplementation is the address of new version of this contract
-    ///@dev only chairman can call this function
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        onlyChairman
-        whenNotPaused
-    {}
 
     /// =================== VARIABLES ================================
 
     ///@notice address of chairman
     address public chairman;
 
-    ///@notice name of the position candidates are vying for standing election
+    ///@notice name of the position candidates are vying for
     string public position;
 
     ///@notice description of position vying for
@@ -79,16 +64,33 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
     ///@notice boolean to track status of election
     bool public Ended;
 
+    ///@notice boolean to track if election has been created
+    bool public Created;
+
+    ///@notice boolean to keep track of whether result should be public or not
+    bool internal publicState;
+
     ///@dev struct of candidates with variables to track name , id and voteCount
     struct Candidate {
         uint256 id;
         string name;
+        string candidateHash;
+        string candidateManifesto;
         uint256 voteCount;
     }
 
     
-
     ///================== PUBLIC FUNCTIONS =============================
+
+    function getCandidates() public view  returns (Candidate[] memory) {
+        Candidate[] memory id = new Candidate[] (candidatesCount);
+        for(uint i=0; i < candidatesCount; i++){
+            Candidate storage candidate = candidates[i];
+            id[i] = candidate;
+
+        }
+        return id;
+    }
 
     ///@notice function that allows stakeholders vote in an election
     ///@param _candidateId the ID of the candidate and hexProof of the voting address
@@ -108,25 +110,40 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
 
     /// @notice function to start an election
     ///@param _prop which is an array of election information
-    function _setUpElection(string[] memory _prop, string[] memory _candidates)
-        internal
+    function setUpElection(string[] memory _prop)
+        public
         whenNotPaused
     {
-        require(
-            _candidates.length > 0,
-            "atleast one person should contest"
-        );
+        require(!Active, "Election is Ongoing");
+        require(_prop.length > 0, "atleast one person should contest");
         require(
             chairman == msg.sender || teachers[msg.sender] == true,
             "only teachers/chairman can call this function"
         );
+        
 
         position = _prop[0];
         description = _prop[1];
-        for (uint256 i = 0; i < _candidates.length; i++) {
-            _addCandidate(_candidates[i]);
-        }
+        Created = true;
     }
+
+    function makeResultPublic()
+        public
+    {
+        require(Ended, "Sorry, the Election has not ended");
+        require(
+            chairman == msg.sender || teachers[msg.sender] == true,
+            "only teachers/chairman can make results public"
+        );
+        publicState = true;
+    }
+
+    function getWinner() public view  returns (uint256, uint256[] memory){
+        require(publicState, "The Results must be made public");
+        return (winnerVoteCount, winnerIds);
+    }
+
+    
 
     /// ==================== INTERNAL FUNCTIONS ================================
     ///@notice internal function that allows users vote
@@ -147,10 +164,17 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
     ///@notice internal function to add candidate to election
     ///@param _name of candidate
     ///@dev function creates a struct of candidates
-    function _addCandidate(string memory _name) internal whenNotPaused {
+    function addCandidate(string memory _name, string memory _candidateHash, string memory _candidateManifesto) public whenNotPaused {
+        require(!Active, "Election is Ongoing");
+        require(
+            chairman == msg.sender || teachers[msg.sender] == true,
+            "only teachers/chairman can call this function"
+        );
         candidates[candidatesCount] = Candidate({
             id: candidatesCount,
             name: _name,
+            candidateHash : _candidateHash,
+            candidateManifesto : _candidateManifesto,
             voteCount: 0
         });
         emit CandidateCreated(candidatesCount, _name);
@@ -229,11 +253,14 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
     ///@notice function to pause the contract
     function pause() public onlyChairman {
         _pause();
+
+        emit Paused(_msgSender());
     }
 
     ///@notice function to unpause the contract
     function unpause() public onlyChairman {
         _unpause();
+        emit Unpaused(_msgSender());
     }
 
     ///@notice function to change chairman
@@ -246,6 +273,45 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
         chairman = _newChairman;
     }
 
+    ///@notice function to close the election
+    function closeElection() public onlyChairman{
+        Created = false;
+         chairman = msg.sender;
+        Active = false;
+        Ended = false;
+        Created = false;
+        candidatesCount = 0;
+        publicState = false;
+        delete winnerIds;
+        winnerVoteCount = 0;
+    }
+
+    ///@notice to check If election has been created
+    function isCreated() public view returns(bool){
+        return Created;
+    }
+
+    ///@notice function to check if election has been started
+    function isStarted() public view returns (bool){
+        return Active;
+    }
+
+    ///@notice function to check if election has been ended
+    function isEnded() public view returns (bool){
+        return Ended;
+    }
+
+    ///@notice function to check if addr is chairman
+    function isChairman() public view  returns (bool){
+        return chairman == msg.sender;
+    }
+
+    ///@notice function to check if election has been started
+    function isTeacher() public view  returns (bool){
+        return teachers[msg.sender];
+    }
+
+
     /// ======================= MODIFIERS =================================
     ///@notice modifier to specify only the chairman can call the function
     modifier onlyChairman() {
@@ -253,12 +319,6 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
         _;
     }
 
-    ///@notice modifier to specify only teachers can call the function
-    modifier onlyTeachers(address _user) {
-        bool Teachers = teachers[_user];
-        require(Teachers, "Only Teachers can call this function");
-        _;
-    }
     ///@notice modifier to specify that election has not ended
     modifier electionIsStillOn() {
         require(!Ended, "Sorry, the Election has ended!");
@@ -266,9 +326,11 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
     }
     ///@notice modifier to check that election is active
     modifier electionIsActive() {
-        require(Active, "Election has not begun!");
+        require(Active, "Please check back, the election has not started!");
         _;
     }
+
+    
     ///@notice modifier to ensure only specified candidate ID are voted for
     ///@param _candidateId of candidates
     modifier onlyValidCandidate(uint256 _candidateId) {
@@ -280,7 +342,7 @@ contract ZuriElection is PausableUpgradeable, UUPSUpgradeable {
     }
 
     ///======================= EVENTS & ERRORS ==============================
-    ///@notice event to emit when election has ended
+    ///@notice event to emit when the contract is unpaused
     event ElectionEnded(uint256[] _winnerIds, uint256 _winnerVoteCount);
     ///@notice event to emit when candidate has been created
     event CandidateCreated(uint256 _candidateId, string _candidateName);

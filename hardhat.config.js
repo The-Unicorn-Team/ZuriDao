@@ -25,11 +25,23 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  * @type import('hardhat/config').HardhatUserConfig
  */
  module.exports = {
-  solidity: "0.8.10",
+  solidity: "0.8.4",
   defaultNetwork,
   networks: {
     rinkeby: {
       url: process.env.URL,
+      accounts: [process.env.KEYS],
+    },
+    ropsten: {
+      url: process.env.URL,
+      accounts: [process.env.KEYS],
+    },
+    mumbai: {
+      url: process.env.URL,
+      accounts: [process.env.KEYS],
+    },
+    localhost: {
+      url: "http://127.0.0.1:8545",
       accounts: [process.env.KEYS],
     },
   },
