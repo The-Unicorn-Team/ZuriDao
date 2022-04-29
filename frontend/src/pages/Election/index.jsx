@@ -135,26 +135,14 @@ const Election = () => {
                     {contender.votes} votes
                   </p>
                 </div>
-                <div className="px-2 flex pt-2 pb-2">
-                  <span
-                    onClick={() => console.log('view candidate')}
-                    className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    View Candidate
-                  </span>
-                  <span
-                    onClick={() =>
-                      voteCandidate(
-                        contender.id,
-                        contender.name,
-                        contender.votes,
-                      )
-                    }
-                    className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    Vote Candidate
-                  </span>
-                </div>
+              <div className="px-2 flex pt-2 pb-2">
+                <span onClick={()=>console.log("view candidate")} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">View Candidate</span>
+                <span onClick={()=> voteCandidate(contender.id)} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Vote Candidate</span>
               </div>
-            ))}
+            </div>
+
+          ))
+          }
         </div>
       </section>
     </main>

@@ -36,7 +36,15 @@ const Admin = () => {
   };
 
   // context
-  const { isStudent, getProof, candidateCount, vote, startElection, endElection } = useContext(AppContext);
+  const {
+    isStudent,
+    getProof,
+    candidateCount,
+    vote,
+    makeResultsPublic,
+    startElection,
+    endElection,
+  } = useContext(AppContext);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -151,15 +159,18 @@ console.log(contract)
 
   // start Election function
   const startElectionFunc = async () => {
-    await startElection()
-
-  }
+    await startElection();
+  };
 
   // end Election function
   const endElectionFunc = async () => {
-    await endElection()
+    await endElection();
+  };
 
-  }
+  // end Election function
+  const makeResultsPublicFunc = async () => {
+    console.log(await makeResultsPublic());
+  };
 
   return (
     <div>
@@ -170,33 +181,33 @@ console.log(contract)
             link="/add-election"
             style={`bg-green-500 ${style.Electbtn} bg-opacity-25`}
           />
-          <Button
-            title="Start Election"
-            link="/start-election"
-            style={`hover:bg-green-500 ${style.Electbtn} hover:bg-opacity-25`}
-            onClick={startElectionFunc}
-          />
-          <Button
-            title="End Election"
-            link="/end-election"
-            style={`hover:bg-red-500 ${style.Electbtn} hover:bg-opacity-25`}
-            onClick={endElectionFunc}
-          />
-          <Button
-            title="Make Public"
-            link="/make-public"
-            style={`hover:bg-blue-500 ${style.Electbtn} hover:bg-opacity-25`}
-          />
-          <Button
-            title="Make Private"
-            link="/make-private"
-            style={`hover:bg-blue-500 ${style.Electbtn} hover:bg-opacity-25`}
-          />
-          <Button
-            title="Get Candidate"
-            link="/get-candidate"
-            style={`hover:bg-gray-500 ${style.Electbtn} hover:bg-opacity-25`}
-          />
+          <button
+            className={`hover:bg-blue-500 ${style.Electbtn} hover:bg-opacity-25`}
+            onClick={startElectionFunc}>
+            Start Election
+          </button>
+          <button
+            className={`hover:bg-blue-500 ${style.Electbtn} hover:bg-opacity-25`}
+            onClick={endElectionFunc}>
+            End Election
+          </button>
+          <button
+            className={`hover:bg-blue-500 ${style.Electbtn} hover:bg-opacity-25`}
+            onClick={makeResultsPublicFunc}>
+            Make Public
+          </button>
+          <button
+            className={`hover:bg-blue-500 ${style.Electbtn} hover:bg-opacity-25`}
+            // onClick={makeResultsPrivateFunc}
+          >
+            Make Private
+          </button>
+          <button
+            className={`hover:bg-blue-500 ${style.Electbtn} hover:bg-opacity-25`}
+            // onClick={() => showCandidates(true)}
+          >
+            Get Candidate
+          </button>
         </div>
       </div>
 
