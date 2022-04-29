@@ -19,16 +19,18 @@ import Section from "../../components/Card/Section";
 
 const data = {
   sectionRight: {
-    title: "Vote your favorite artist",
-    description: "Transfer Bitcoin, Ethereum, and other crypto to a Rewards Account and you'll earn up to 13.5% in rewards annually, deposited monthly.",
-    text: "Learn more"
+    title: 'Vote your favorite Candidate',
+    description:
+      'Take your time and vote wisely, dont forget to read through the manifesto.',
+    text: 'Vote Now',
   },
   sectionLeft: {
-    title: "Vote your favorite artist",
-    description: "Transfer Bitcoin, Ethereum, and other crypto to a Rewards Account and you'll earn up to 13.5% in rewards annually, deposited monthly.",
-    text: "Learn more"
-  }
-}
+    title: 'Vote your favorite Candidate',
+    description:
+      'Take your time and vote wisely, dont forget to read through the manifesto.',
+    text: 'Vote Now',
+  },
+};
 const Home = () => {
   const classes = useStyles();
   const globalStyles = useGlobalStyles();
