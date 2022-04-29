@@ -15,7 +15,20 @@ import { ReactComponent as NvidiaLogo } from "../../assets/images/shared/nvidia.
 import { ReactComponent as OracleLogo } from "../../assets/images/shared/oracle.svg";
 import { ReactComponent as HewlettPackardLogo } from "../../assets/images/shared/hewlett-packard.svg";
 import { AppContext } from "../../context/AppContext";
+import Section from "../../components/Card/Section";
 
+const data = {
+  sectionRight: {
+    title: "Vote your favorite artist",
+    description: "Transfer Bitcoin, Ethereum, and other crypto to a Rewards Account and you'll earn up to 13.5% in rewards annually, deposited monthly.",
+    text: "Learn more"
+  },
+  sectionLeft: {
+    title: "Vote your favorite artist",
+    description: "Transfer Bitcoin, Ethereum, and other crypto to a Rewards Account and you'll earn up to 13.5% in rewards annually, deposited monthly.",
+    text: "Learn more"
+  }
+}
 const Home = () => {
   const classes = useStyles();
   const globalStyles = useGlobalStyles();
@@ -65,7 +78,7 @@ const Home = () => {
             className={classNames("mt-8 sm:flex sm:items-stretch ")}
             onSubmit={submitHandler}
           >
-            {!currentAccount ? (
+             {!currentAccount ? (
               <button
                 onClick={connectWallet}
                 className={classNames(
@@ -80,7 +93,7 @@ const Home = () => {
               </button>
             ) : (
               ""
-            )}
+            )} 
           </form>
         </div>
       </section>
@@ -167,13 +180,14 @@ const Home = () => {
             }
           />
         </div>
-        <div
+        {/* <div
           className={classNames(
             "mt-8 md:mt-0 flex flex-col items-center md:items-start",
             classes.companiesContent
           )}
-        >
-          <Typography
+        > */}
+        <div className="flex flex-col sm:flex-row -mt-60 sm:mt-0"> 
+          {/* <Typography
             component="h2"
             variant="h6"
             className={classNames(
@@ -181,8 +195,8 @@ const Home = () => {
             )}
           >
             Why we are doing this
-          </Typography>
-          <Typography
+          </Typography> */}
+          {/* <Typography
             component="p"
             className={classNames("text-slate-300  md:text-left pt-4")}
           >
@@ -201,19 +215,26 @@ const Home = () => {
             blockchain provide for a quicker, tamper-proof way of counting
             votes, which could lead to greater voter participation, better
             ballot security, and at lower cost.
-          </Typography>
-          <Link
+          </Typography> */}
+           {/* <Link
             to="about-us"
             className={classNames(
               "rounded-full mt-8 px-6 border-solid text-white border border-slate-300 py-2.5"
             )}
           >
             About
-          </Link>
+          </Link>  */}
+          <img src="https://www.blockchain.com/static/img/wallet/wallet-buy-phone.png" alt="img"  className="" width="400"/>
+          <Section data={data} styleTitle ="text-gray-200  text-3xl sm:text-5xl text-center" styleDescription="text-gray-200 text-center text-sm sm:text-base "  styleBtn="text-blue-500 mt-4"/>  
         </div>
       </section>
+       <div className="flex flex-col-reverse sm:flex-row-reverse px-4"  > 
+          <img src="https://www.blockchain.com/static/img/wallet/wallet-interest-phone.png" alt="img"  className="" width="400"/>
+          <Section data={data} styleTitle ="text-gray-800  text-3xl sm:text-5xl text-center" styleDescription="text-gray-700 text-center text-sm sm:text-base"  styleBtn="text-blue-500 mt-4"/> 
+        </div>
     </main>
   );
 };
 
 export default Home;
+
