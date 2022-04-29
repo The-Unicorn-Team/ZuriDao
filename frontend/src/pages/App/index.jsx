@@ -53,7 +53,7 @@ const App = () => {
                 <Route exact path="/" element={<HomePage />} />
                 <Route exact path="/admin" element={<Admin />} />
               </Routes>
-              <Footer />
+               <Footer /> 
             </Router>
           </AppContextProvider>
         </ThemeProvider>
