@@ -1,3 +1,1 @@
-export const contractAddress = '0x9131B00B682Cc1F18c36640187B14B8A4A2A3276';
-
-// '0x8EC2359E29b17Cd9DA4ae56331aa96851078C771' pidoxy
+export const contractAddress = '0x58Ca97aff571Ef8A09bE04Df8EB8503aAD55778D';

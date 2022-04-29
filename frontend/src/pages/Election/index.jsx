@@ -19,17 +19,9 @@ const { ethereum } = window;
 const Election = () => {
   const classes = useStyles();
   const globalStyles = useGlobalStyles();
-  const {
-    currentAccount,
-    connectWallet,
-    isStudent,
-    getProof,
-    candidateCount,
-    vote,
-    startElection,
-    endElection,
-  } = useContext(AppContext);
-  const [candidateId, setCandidateId] = useState(0);
+
+  const { currentAccount, connectWallet, isStudent, getProof, candidateCount, vote } = useContext(AppContext);
+  const [candidateId, setCandidateId] = useState(0)
   const [show, setShow] = useState(false);
   const [contenders, setContenders] = useState([]);
   const [contract, setContract] = useState('');
@@ -95,10 +87,6 @@ const Election = () => {
     });
   };
 
-  const start = async () => {
-    await startElection();
-  };
-
   const voteCandidate = async (id) => {
     const contract = createEthereumContract();
 
@@ -124,22 +112,8 @@ const Election = () => {
         <div className="container">
           <div className="row">
             <div className="d-flex justify-content-end">
-              <button className="btn btn-lg btn-success me-2" onClick={start}>
-                Start Election
-              </button>
-              <button className="btn btn-lg btn-danger me-2">
-                End Election
-              </button>
-              <button
-                className="btn btn-lg btn-danger me-2"
-                onClick={() => showCandidates(true)}>
+              <button className="btn btn-lg btn-danger me-2" onClick={() => showCandidates(true)}>
                 Get Candidates
-              </button>
-              <button className="btn btn-lg btn-primary me-2">
-                Make Public
-              </button>
-              <button className="btn btn-lg btn-primary me-2">
-                Make Private
               </button>
             </div>
           </div>
@@ -161,26 +135,14 @@ const Election = () => {
                     {contender.votes} votes
                   </p>
                 </div>
-                <div className="px-2 flex pt-2 pb-2">
-                  <span
-                    onClick={() => console.log('view candidate')}
-                    className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    View Candidate
-                  </span>
-                  <span
-                    onClick={() =>
-                      voteCandidate(
-                        contender.id,
-                        contender.name,
-                        contender.votes,
-                      )
-                    }
-                    className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    Vote Candidate
-                  </span>
-                </div>
+              <div className="px-2 flex pt-2 pb-2">
+                <span onClick={()=>console.log("view candidate")} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">View Candidate</span>
+                <span onClick={()=> voteCandidate(contender.id)} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Vote Candidate</span>
               </div>
-            ))}
+            </div>
+
+          ))
+          }
         </div>
       </section>
     </main>
