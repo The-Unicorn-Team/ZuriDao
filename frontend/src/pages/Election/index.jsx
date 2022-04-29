@@ -30,6 +30,10 @@ const Election = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+
+  const proof = getProof
+
+  console.log("this is the proof\n",proof)
   // fetch contract
   const createEthereumContract = () => {
     const provider = new ethers.providers.Web3Provider(ethereum);
@@ -90,12 +94,11 @@ const Election = () => {
   const voteCandidate = async (id) => {
     const contract = createEthereumContract();
 
+    
+
     try {
-      let root = [];
-      const merkleRoot = await contract.root();
-      root.push(ethers.utils.keccak256(merkleRoot));
-      console.log(root);
-      console.log(contract.vote(id, root));
+      
+      await contract.vote(contenders.id, proof);
       // console.log(await contract.root())
     } catch (error) {
       console.log(error);

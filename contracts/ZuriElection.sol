@@ -38,8 +38,9 @@ contract ZuriElection is Pausable {
     ///@notice count of candidates
     ///@dev count to keep track of number of candidates
     uint256 public candidatesCount;
-
-    ///@notice 
+    ///@notice variable to track number of election held
+        uint256 electionCount;
+    ///@notice variable to track time
     uint256 public startTimer;
     ///@dev mapping of address for teachers
     ///@notice list of teachers
