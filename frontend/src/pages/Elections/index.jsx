@@ -42,11 +42,6 @@ const Home = () => {
         
         {!isStudent ? (
             <div className="container">
-                <div className="row">
-                    <div className="d-flex justify-content-end">
-                        <Link to="/add-election" class="btn btn-lg btn-primary">Create Election</Link>
-                    </div>
-                </div>
                 <div className="col-4">
                     <div className="card">
                         <div className="card-body">

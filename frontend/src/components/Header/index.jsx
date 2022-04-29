@@ -27,6 +27,8 @@ import { useGlobalStyles } from "../../styles";
 import { ReactComponent as Logo } from "../../assets/images/icons/logo.svg";
 import { AppContext } from "../../context/AppContext";
 
+
+
 const Header = () => {
   //const display = useDisplay();
   //const text = useTypography();
@@ -68,8 +70,11 @@ const Header = () => {
     });
   }, [scrollHelper]);
 
+
+ 
   return (
     <header
+      
       className={classNames(
         "flex items-center justify-between py-4 sm:py-6 absolute w-full bg-no-repeat header",
         globalStyles.px,
@@ -77,10 +82,22 @@ const Header = () => {
       )}
       ref={headerRef}
     >
+       {/* <button onclick={connectWallet}>Connect wallet</button> */}
+
       <div className={classNames("flex items-center")}>
         <Link to="/">
           <h1 className="text-3xl font-extrabold text-gray-400">ZuriDAPP</h1>
         </Link>
+      </div>
+      <div>
+        <ul className=" space-x-8 sm:flex hidden" >
+          <Link to="/elections" className=" text-decoration-none">
+          <li className=" text-gray-700 font-semibold cursor-pointer hover:bg-blue-500  hover:bg-opacity-25 px-3 py-2 rounded-md translate-x-1 duration-1000">Student Portal</li>
+          </Link>
+          <Link to="/admin" className=" text-decoration-none">
+          <li className=" text-gray-700 font-semibold cursor-pointer hover:bg-blue-500 hover:bg-opacity-25 px-3 py-2 rounded-md translate-x-1 duration-1000">Admin Portal</li>
+          </Link>
+        </ul>
       </div>
       <div className={classNames("flex items-center")}>
         <div>
@@ -92,14 +109,14 @@ const Header = () => {
                 globalStyles.darkPinkButton,
                 classes.scheduleButton,
 
-                "border-0 outline-none rounded-full text-white py-2.5"
+                "border-0 outline-none rounded-full text-white py-2.5 hidden sm:block"
               )}
             >
               Connect Wallet
             </button>
           ) : (
             <span className="nav-item text-3xl font-extrabold text-gray-400">
-              Profile: <Link to="/elections">{shortenedAddress}</Link>
+              
             </span>
           )}
         </div>
