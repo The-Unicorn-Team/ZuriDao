@@ -195,6 +195,7 @@ export const AppContextProvider = ({ children }) => {
       
      }
     }
+    
 
     const checkIfWalletIsConnect = async () => {
       
