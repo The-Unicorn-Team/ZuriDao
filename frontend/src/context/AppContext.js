@@ -51,17 +51,32 @@ export const AppContextProvider = ({ children }) => {
       }
     }
 
-    const setUpElection = async(prop, candidateNames) =>{
+    const setUpElection = async(prop) =>{
       const contract = createEthereumContract();
 
       try {
-        let result = await contract.setUpElection(prop, candidateNames);
+        let result = await contract.setUpElection(prop);
         const receipt = await result.wait();
         if (receipt.status === 1) {
-         alert("success");}
+         console.log("success");}
           }
       catch(error){
-        alert(error)
+        console.log(error)
+      
+      }
+    }
+
+    const addContender = async(name, hash, manifesto) =>{
+      const contract = createEthereumContract();
+
+      try {
+        let result = await contract.addCandidate(name, hash, manifesto);
+        const receipt = await result.wait();
+        if (receipt.status === 1) {
+         console.log("success");}
+          }
+      catch(error){
+        console.log(error)
       
       }
     }
@@ -230,7 +245,7 @@ export const AppContextProvider = ({ children }) => {
     const getProof = (address) => {
 
       let stakeholders = [
-        "0x9F6Dd51f7a18Ce5D6FaFF9e5d3e5764Cca61cC44","0x20497F37a8169c8C9fA09411F8c2CFB7c90dE5d1","0x70FADB1887f906dF7060330b61ed16434d82189f","0x3849DDF392848582b860982740615b43AA537aC2","0x5d16FA7F1f7513e4603103dc353A284aA96BA7f4"
+        "0x9F6Dd51f7a18Ce5D6FaFF9e5d3e5764Cca61cC44","0x20497F37a8169c8C9fA09411F8c2CFB7c90dE5d1","0x70FADB1887f906dF7060330b61ed16434d82189f","0x3849DDF392848582b860982740615b43AA537aC2","0x5d16FA7F1f7513e4603103dc353A284aA96BA7f4","0x7F913b411F2C509dc1C8271aFb26160223fa6be8"
     ]
     
     // this creates a new array "leafnodes" by hashing the index of all stakeholders addresses using keccak256
@@ -253,6 +268,6 @@ export const AppContextProvider = ({ children }) => {
 
     return (
         <AppContext.Provider value={{ currentAccount,
-            connectWallet, getCandidates, setUpElection, makeResultsPublic,  getProof,vote, startElection,endElection,removeTeacher,addTeacher,changeChairman,pauseContract, unPauseContract, isStudent }}>{ children }</AppContext.Provider>
+            connectWallet, getCandidates, setUpElection, addContender, makeResultsPublic,  getProof,vote, startElection,endElection,removeTeacher,addTeacher,changeChairman,pauseContract, unPauseContract, isStudent }}>{ children }</AppContext.Provider>
     );
 };

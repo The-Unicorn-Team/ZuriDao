@@ -8,6 +8,8 @@ const PreviewCandidates = (props) => {
         <div className="card-body">
             <h5 className="card-title">{props.image.candidate_name}</h5>
             <button className="btn btn-danger float-right" onClick={props.handleRemove}>Remove</button>
+            <button className="btn btn-primary my-3 float-right" onClick={() => props.addCandidate(props.keys)}>Add Candidate</button>
+
         </div>
     </div>
     </div>
