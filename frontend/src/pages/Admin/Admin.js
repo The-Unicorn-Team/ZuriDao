@@ -35,6 +35,9 @@ const Admin = () => {
     event.preventDefault();
   };
 
+  // context
+  const { isStudent, getProof, candidateCount, vote, startElection, endElection } = useContext(AppContext);
+
   const handleAdd = async (e) => {
     e.preventDefault();
     await addTeacher(address);
@@ -146,6 +149,18 @@ console.log(contract)
   }, [showCandidates])
 }
 
+  // start Election function
+  const startElectionFunc = async () => {
+    await startElection()
+
+  }
+
+  // end Election function
+  const endElectionFunc = async () => {
+    await endElection()
+
+  }
+
   return (
     <div>
       <div className="flex flex-col sm:flex-row justify-center align-items-center w-full ">
@@ -159,11 +174,13 @@ console.log(contract)
             title="Start Election"
             link="/start-election"
             style={`hover:bg-green-500 ${style.Electbtn} hover:bg-opacity-25`}
+            onClick={startElectionFunc}
           />
           <Button
             title="End Election"
             link="/end-election"
             style={`hover:bg-red-500 ${style.Electbtn} hover:bg-opacity-25`}
+            onClick={endElectionFunc}
           />
           <Button
             title="Make Public"
