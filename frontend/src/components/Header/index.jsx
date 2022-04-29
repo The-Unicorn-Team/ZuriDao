@@ -37,6 +37,10 @@ const Header = () => {
   const classes = useStyles();
   const globalStyles = useGlobalStyles();
 
+  const [ canIOpenNavBar, setCanIOpenNavBar ] = useState(false);
+    const menuClickHandler = useCallback(() => setCanIOpenNavBar(b => !b), [ ]);
+    const clickHandler = useCallback(() => setCanIOpenNavBar(false), []);
+
   const headerRef = useRef();
   const scrollHelper = useCallback(
     (pageYOffset) => {
