@@ -39,7 +39,7 @@ contract ZuriElection is Pausable {
     ///@dev count to keep track of number of candidates
     uint256 public candidatesCount;
     ///@notice variable to track number of election held
-        uint256 electionCount;
+    uint256 electionCount;
     ///@notice variable to track time
     uint256 public startTimer;
     ///@dev mapping of address for teachers
@@ -57,6 +57,12 @@ contract ZuriElection is Pausable {
     ///@notice variable to track winning candidate
     ///@dev an array that returns id of winning candidate(s)
     uint256[] public winnerIds;
+
+    ///@notice variable to track winning candidate
+    ///@dev an array that returns id of winning candidate(s)
+    mapping(uint256 => Election) public winners;
+
+    
 
     ///@notice count of vote of winning id
     ///@dev variable to track to vote count of items in winnerids array
@@ -80,6 +86,12 @@ contract ZuriElection is Pausable {
         string candidateHash;
         string candidateManifesto;
         uint256 voteCount;
+    }
+
+    struct Election {
+        string position;
+        string description;
+        Candidate winner;
     }
 
     
@@ -128,6 +140,7 @@ contract ZuriElection is Pausable {
         position = _prop[0];
         description = _prop[1];
         Created = true;
+        electionCount++;
     }
 
     function makeResultPublic()
@@ -144,6 +157,16 @@ contract ZuriElection is Pausable {
     function getWinner() public view  returns (uint256, uint256[] memory){
         require(publicState, "The Results must be made public");
         return (winnerVoteCount, winnerIds);
+    }
+
+    function getWinners() public view returns (Election[] memory){
+         Election[] memory elections = new Election[] (electionCount);
+        for(uint i=0; i < electionCount; i++){
+            Election storage winner = winners[i];
+            elections[i] = winner;
+
+        }
+        return elections;
     }
 
     
@@ -204,7 +227,14 @@ contract ZuriElection is Pausable {
             }
         }
 
+
+        winners[electionCount] = Election({
+            position: position,
+            description : description,
+            winner: candidates[winnerIds[0]]
+        });
         return (winnerVoteCount, winnerIds);
+
     }
 
     /// @notice function to start election

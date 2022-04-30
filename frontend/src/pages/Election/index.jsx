@@ -30,10 +30,13 @@ const Election = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+<<<<<<< HEAD
 
   const proof = getProof
 
   
+=======
+>>>>>>> f0f24d6033eeb31f47a2305c8e4b12bfe9159840
   // fetch contract
   const createEthereumContract = () => {
     const provider = new ethers.providers.Web3Provider(ethereum);
