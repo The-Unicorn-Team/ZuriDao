@@ -159,6 +159,16 @@ contract ZuriElection is Pausable {
         return (winnerVoteCount, winnerIds);
     }
 
+    function getWinners() public view returns (Election[] memory){
+         Election[] memory elections = new Election[] (electionCount);
+        for(uint i=0; i < electionCount; i++){
+            Election storage winner = winners[i];
+            elections[i] = winner;
+
+        }
+        return elections;
+    }
+
     
 
     /// ==================== INTERNAL FUNCTIONS ================================
