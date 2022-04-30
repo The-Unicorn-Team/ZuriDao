@@ -220,30 +220,30 @@ console.log(contract)
           )}>
           <div className="col-md-9">
             <div className="row">
-              <form class="row g-3">
-                <div class="col-12">
-                  <label for="inputAddress" class="form-label">
+              <form className="row g-3">
+                <div className="col-12">
+                  <label  className="form-label">
                     Address
                   </label>
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     id="inputAddress"
                     placeholder="Enter Address"
                     onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
-                <div class="col-12">
+                <div className="col-12">
                   <button
                     type="submit"
-                    class="btn btn-primary mr-7"
+                    className="btn btn-primary mr-7"
                     onClick={handleAdd}>
                     Add Teacher
                   </button>
                   {'     '} {'     '}{' '}
                   <button
                     type="submit"
-                    class=" pl-9 btn btn-warning"
+                    className=" pl-9 btn btn-warning"
                     onClick={handleRemove}>
                     Remove Teacher
                   </button>
@@ -253,12 +253,12 @@ console.log(contract)
             <br />
             <br />
             <div>
-              <label for="inputAddress" class="form-label">
+              <label  className="form-label">
                 CHAIRMAN
               </label>
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 id="inputAddress"
                 placeholder="Enter Address"
                 onChange={(e) => setChairman(e.target.value)}
@@ -267,7 +267,7 @@ console.log(contract)
             <div>
               <button
                 type="submit"
-                class="btn btn-primary mr-7 mt-2"
+                className="btn btn-primary mr-7 mt-2"
                 onClick={handleChair}>
                 changeChairman
               </button>

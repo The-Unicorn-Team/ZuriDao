@@ -35,7 +35,7 @@ export const AppContextProvider = ({ children }) => {
       const contract = createEthereumContract();
       try {
         const result = await contract.isChairman();
-        setIsChairman(true);
+        setIsChairman(result);
       }catch(error){
         alert(error);
       }
@@ -45,7 +45,7 @@ export const AppContextProvider = ({ children }) => {
       const contract = createEthereumContract();
       try {
         const result = await contract.isCreated();
-        setIsCreated(true);
+        setIsCreated(result);
       }catch(error){
         alert(error);
       }
@@ -55,7 +55,7 @@ export const AppContextProvider = ({ children }) => {
       const contract = createEthereumContract();
       try {
         const result = await contract.isStarted();
-        setIsStarted(true);
+        setIsStarted(result);
       }catch(error){
         alert(error);
       }
@@ -65,7 +65,7 @@ export const AppContextProvider = ({ children }) => {
       const contract = createEthereumContract();
       try {
         const result = await contract.isTeacher();
-        setIsTeacher(true);
+        setIsTeacher(result);
       }catch(error){
         alert(error);
       }

@@ -82,9 +82,11 @@ const Election = () => {
         _id: item.id,
         name: item.name,
         votes: Number(ethers.utils.hexValue(item.voteCount._hex).slice(2)),
+        hash : item.candidateHash,
       });
       console.log(candidateArray[0]._id._hex);
       setContenders(candidateArray);
+      console.log(candidateArray);
       // console.log(contenders)
     });
   };
@@ -124,7 +126,7 @@ const Election = () => {
               <div key={index} className="max-w-sm basis-1/3 rounded shadow-lg">
                 <img
                   className="w-full"
-                  src="images/profile.jpg"
+                  src={"https://ipfs.infura.io/ipfs/" +contender.hash}
                   alt={`${contender.name} with ${contender.count} votes`}
                 />
                 <div className="px-6 py-2">

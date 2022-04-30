@@ -6,9 +6,10 @@ import { ethers } from 'ethers'
 import { useGlobalStyles } from "../../styles";
 import { Link } from "react-router-dom";
 import { useCallback, useContext, useState } from "react";
-
+import { create as ipfsHttpClient } from "ipfs-http-client";
 import { AppContext } from '../../context/AppContext';
 import PreviewCandidates from "../../components/PreviewCandidates/PreviewCandidates";
+const ipfs = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
 
 const AddElection = () => {
@@ -26,8 +27,19 @@ const AddElection = () => {
 
   const prop = [electionName, description]
 
-  console.log(prop)
   const hash = 'QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH';
+
+  const uploadFile = async (file) => {
+   
+
+    try {
+        const added = await ipfs.add(file)
+        
+        return added.path;       
+    } catch (err) {
+        console.log('Error uploading the file : ', err)
+    }
+  }
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -98,8 +110,9 @@ const AddElection = () => {
 
   const addCandidateFunction = async (i) => {
     console.log(candidates[i])
+    const hashes = await uploadFile(candidates[i].picture);
 
-    await addContender(candidates[i].candidate_name, hash, candidates[i].manifesto)
+    await addContender(candidates[i].candidate_name, hashes, candidates[i].manifesto);
   }
 
   const createPreview = () => {
@@ -120,7 +133,7 @@ const AddElection = () => {
 
       await setUpElection(prop)
 
-
+      window.location.href="/election";
 
     } catch (error) {
       alert(error)
