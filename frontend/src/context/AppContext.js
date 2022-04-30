@@ -12,6 +12,10 @@ const { ethereum } = window;
 export const AppContextProvider = ({ children }) => {
 
     const [currentAccount, setCurrentAccount] = useState("");
+    const [isChairman, setIsChairman] = useState(false);
+    const [isCreated, setIsCreated] = useState(false);
+    const [isStarted, setIsStarted] = useState(false);
+    const [isTeacher, setIsTeacher] = useState(false);
     const [isStudent, setIsStudent] = useState(false)
  
     const stakeholders = [
@@ -25,6 +29,48 @@ export const AppContextProvider = ({ children }) => {
      
       return ZuriContract;
     };
+
+
+
+    const checkChairman = async() => {
+      const contract = createEthereumContract();
+      try {
+        const result = await contract.isChairman();
+        setIsChairman(true);
+      }catch(error){
+        alert(error);
+      }
+    }
+    
+    const checkCreated = async() => {
+      const contract = createEthereumContract();
+      try {
+        const result = await contract.isCreated();
+        setIsCreated(true);
+      }catch(error){
+        alert(error);
+      }
+    }
+
+    const checkStarted = async() => {
+      const contract = createEthereumContract();
+      try {
+        const result = await contract.isStarted();
+        setIsStarted(true);
+      }catch(error){
+        alert(error);
+      }
+    }
+
+    const checkTeacher= async() => {
+      const contract = createEthereumContract();
+      try {
+        const result = await contract.isTeacher();
+        setIsTeacher(true);
+      }catch(error){
+        alert(error);
+      }
+    }
 
     const vote = async(id, proof) =>{
       const contract = createEthereumContract();
@@ -200,31 +246,46 @@ export const AppContextProvider = ({ children }) => {
       
      }
     }
+
+  
+    
+    
     
 
     const checkIfWalletIsConnect = async () => {
       
       try {
         if (!ethereum) return alert("Please install MetaMask.");
-       // const provider = new ethers.providers.Web3Provider(ethereum);
-        const accounts = await ethereum.request({ method: "eth_accounts" });
+      //  const provider = new ethers.providers.Web3Provider(ethereum);
+        // const accounts = await ethereum.request({ method: "eth_accounts" });
   
-        if (accounts.length) {
-        //  setCurrentAccount(await provider.lookupAddress(accounts[0]));
-        setCurrentAccount(accounts[0]);
-        console.log(accounts);
-      
-        } else {
-          console.log("No accounts found");
+        // if (accounts.length) {
+        // //  setCurrentAccount(await provider.lookupAddress(accounts[0]));
+        // setCurrentAccount(accounts[0]);
+        // console.log(accounts);
+        console.log(currentAccount);
+        ethereum.on('accountsChanged',  () => {
+           
+            
+          window.location.href="/";
+        });
+
+        if(sessionStorage.getItem("wallet")){
+          setCurrentAccount(sessionStorage.getItem("wallet"));
         }
+
+        // ethereum.on('disconnect', ()=>{
+        //   setCurrentAccount("");
+        //   window.location.href="/";
+        // });
+        // } else {
+        //   console.log("No accounts found");
+        // }
       } catch (error) {
         console.log(error);
       }
     };
 
-    const checkStudent = async () => {
-        setIsStudent(false);
-    }
   
     
   
@@ -238,15 +299,22 @@ export const AppContextProvider = ({ children }) => {
         
   
         setCurrentAccount(accounts[0]);
-        
-        
-        window.location.reload();
+        sessionStorage.setItem("wallet", accounts[0]);
+        // window.location.reload();
       } catch (error) {
         console.log(error);
   
         throw new Error("No ethereum object");
       }
     };
+
+   
+
+    const disconnectWallet = async () => {
+      setCurrentAccount("");
+      sessionStorage.clear();
+      window.location.reload();
+    }
 
     const getProof = (currentAccount) => {
 
@@ -267,11 +335,33 @@ export const AppContextProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        checkStudent();
-    }, [])
+        checkChairman();
+        checkCreated();
+        checkStarted();
+        checkTeacher();
+    }, []);
 
     return (
         <AppContext.Provider value={{ currentAccount,
-            connectWallet, getCandidates, setUpElection, addContender, makeResultsPublic,  getProof,vote, startElection,endElection,removeTeacher,addTeacher,changeChairman,pauseContract, unPauseContract, isStudent }}>{ children }</AppContext.Provider>
+            connectWallet,
+            disconnectWallet, 
+            getCandidates, 
+            setUpElection, 
+            addContender, 
+            isChairman,
+            isCreated,
+            isStarted,
+            isTeacher,
+            makeResultsPublic, 
+            getProof,
+            vote, 
+            startElection,
+            endElection,
+            removeTeacher,
+            addTeacher,
+            changeChairman,
+            pauseContract, 
+            unPauseContract, 
+            isStudent }}>{ children }</AppContext.Provider>
     );
 };
