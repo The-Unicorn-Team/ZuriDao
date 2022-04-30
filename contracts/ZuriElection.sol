@@ -39,7 +39,7 @@ contract ZuriElection is Pausable {
     ///@dev count to keep track of number of candidates
     uint256 public candidatesCount;
     ///@notice variable to track number of election held
-        uint256 electionCount;
+    uint256 electionCount;
     ///@notice variable to track time
     uint256 public startTimer;
     ///@dev mapping of address for teachers
@@ -56,7 +56,12 @@ contract ZuriElection is Pausable {
 
     ///@notice variable to track winning candidate
     ///@dev an array that returns id of winning candidate(s)
-    uint256[] public winnerIds;
+
+    ///@notice variable to track winning candidate
+    ///@dev an array that returns id of winning candidate(s)
+    mapping(uint256 => Election) public winners;
+
+    
 
     ///@notice count of vote of winning id
     ///@dev variable to track to vote count of items in winnerids array
@@ -80,6 +85,12 @@ contract ZuriElection is Pausable {
         string candidateHash;
         string candidateManifesto;
         uint256 voteCount;
+    }
+
+    struct Election {
+        string Position;
+        string description;
+        Candidate winner;
     }
 
     
@@ -128,6 +139,7 @@ contract ZuriElection is Pausable {
         position = _prop[0];
         description = _prop[1];
         Created = true;
+        electionCount++;
     }
 
     function makeResultPublic()
