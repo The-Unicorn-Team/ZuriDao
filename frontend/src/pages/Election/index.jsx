@@ -79,9 +79,11 @@ const Election = () => {
     result.map((item) => {
       candidateArray.push({
         id: Number(ethers.utils.hexValue(item.id._hex).slice(2)),
+        _id: item.id,
         name: item.name,
         votes: Number(ethers.utils.hexValue(item.voteCount._hex).slice(2)),
       });
+      console.log(candidateArray[0]._id._hex);
       setContenders(candidateArray);
       // console.log(contenders)
     });
@@ -92,7 +94,7 @@ const Election = () => {
   
     try {
       
-  await contract.vote(contenders.id)
+  await contract.vote(id);
     } catch (error) {
       console.log(error);
     }
@@ -133,7 +135,10 @@ const Election = () => {
                 </div>
               <div className="px-2 flex pt-2 pb-2">
                 <span onClick={()=>console.log("view candidate")} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">View Candidate</span>
-                <span onClick={()=> voteCandidate(contender.id)} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Vote Candidate</span>
+                <span onClick={()=> {
+                  voteCandidate(contender._id); 
+                  // console.log(contender._id)
+                  }} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Vote Candidate</span>
               </div>
             </div>
 
