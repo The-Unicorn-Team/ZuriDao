@@ -97,6 +97,21 @@ export const AppContextProvider = ({ children }) => {
       }
     }
 
+    // Get Winner Function
+    const getWinner = async() =>{
+      const contract = createEthereumContract();
+
+      try {
+        let result = await contract.getWinner();
+
+        return result
+                  }
+      catch(error){
+        alert(error)
+      
+      }
+    }
+
     const setUpElection = async(prop) =>{
       const contract = createEthereumContract();
 
@@ -241,10 +256,6 @@ export const AppContextProvider = ({ children }) => {
       
      }
     }
-
-  
-    
-    
     
 
     const checkIfWalletIsConnect = async () => {
@@ -345,6 +356,6 @@ export const AppContextProvider = ({ children }) => {
             changeChairman,
             pauseContract, 
             unPauseContract, 
-            isStudent }}>{ children }</AppContext.Provider>
+            isStudent, getWinner }}>{ children }</AppContext.Provider>
     );
 };

@@ -26,23 +26,16 @@ const Admin = () => {
     removeTeacher,
     pauseContract,
     unPauseContract,
+    getWinner,
+    makeResultsPublic,
+    startElection,
+    endElection,
   } = useContext(AppContext);
   const [address, setAddress] = useState('');
   const [chairman, setChairman] = useState('');
   const submitHandler = (event) => {
     event.preventDefault();
   };
-
-  // context
-  const {
-    isStudent,
-    getProof,
-    candidateCount,
-    vote,
-    makeResultsPublic,
-    startElection,
-    endElection,
-  } = useContext(AppContext);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -61,16 +54,7 @@ const Admin = () => {
   const Election = () => {
     const classes = useStyles();
     const globalStyles = useGlobalStyles();
-    const {
-      currentAccount,
-      connectWallet,
-      isStudent,
-      getProof,
-      candidateCount,
-      vote,
-      startElection,
-      endElection,
-    } = useContext(AppContext);
+    const { startElection, getWinner } = useContext(AppContext);
     const [candidateId, setCandidateId] = useState(0);
     const [show, setShow] = useState(false);
     const [contenders, setContenders] = useState([]);
@@ -91,27 +75,6 @@ const Admin = () => {
       );
 
       return ZuriContract;
-    };
-
-    // useEffect(() => {
-    //   createEthereumContract();
-    // }, [])
-
-    const handleVote = () => {
-      confirmAlert({
-        title: 'Confirm to submit',
-        message: 'Are you sure, You want to vote for this person',
-        buttons: [
-          {
-            label: 'Yes',
-            onClick: () => alert('Click Yes'),
-          },
-          {
-            label: 'No',
-            onClick: () => alert('Click No'),
-          },
-        ],
-      });
     };
 
     //  get all candidates
@@ -175,9 +138,14 @@ const Admin = () => {
     await endElection();
   };
 
-  // end Election function
+  // make Election Results Public
   const makeResultsPublicFunc = async () => {
     console.log(await makeResultsPublic());
+  };
+
+  // declare election winner
+  const getElectionWinner = async () => {
+    console.log(await getWinner());
   };
 
   return (
@@ -209,6 +177,11 @@ const Admin = () => {
             // onClick={makeResultsPrivateFunc}
           >
             Make Private
+          </button>
+          <button
+            className={`hover:bg-blue-500 ${style.Electbtn} hover:bg-opacity-25`}
+            onClick={getElectionWinner}>
+            Announce Winner
           </button>
         </div>
       </div>
