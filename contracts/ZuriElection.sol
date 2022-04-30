@@ -110,15 +110,15 @@ contract ZuriElection is Pausable {
     ///@notice function that allows stakeholders vote in an election
     ///@param _candidateId the ID of the candidate and hexProof of the voting address
     ///@dev function verifies proof
-    function vote(uint256 _candidateId, bytes32[] calldata hexProof)
+    function vote(uint256 _candidateId)
         public
         electionIsStillOn
         electionIsActive
     {
-        require(
-            isValid(hexProof, keccak256(abi.encodePacked(msg.sender))),
-            "sorry, only stakeholders are eligible to vote"
-        );
+        // require(
+        //     isValid(hexProof, keccak256(abi.encodePacked(msg.sender))),
+        //     "sorry, only stakeholders are eligible to vote"
+        // );
 
         _vote(_candidateId, msg.sender);
     }

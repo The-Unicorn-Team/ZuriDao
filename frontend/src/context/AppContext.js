@@ -75,7 +75,7 @@ export const AppContextProvider = ({ children }) => {
       const contract = createEthereumContract();
 
       try {
-       let result = await contract.vote(id,proof);
+       let result = await contract.vote(id);
        
        const receipt = await result.wait();
        if (receipt.status === 1) {

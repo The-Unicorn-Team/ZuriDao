@@ -76,6 +76,722 @@
       "ZuriElection": {
         "src": "contracts/ZuriElection.sol:12",
         "version": {
+          "withMetadata": "f56e7ac99ea012c6c92320bef8d770d52e06071566a0b16399b2855978fbb175",
+          "withoutMetadata": "4d9761d808ce19c7cf38cf6abfa61d2a15a86b4a14b77a0cce05b1b50e846b2a",
+          "linkedWithoutMetadata": "4d9761d808ce19c7cf38cf6abfa61d2a15a86b4a14b77a0cce05b1b50e846b2a"
+        },
+        "inherit": [
+          "Pausable",
+          "Context"
+        ],
+        "libraries": [
+          "MerkleProof"
+        ],
+        "methods": [
+          "(bytes32)",
+          "getCandidates()",
+          "vote(uint256)",
+          "setUpElection(string[])",
+          "makeResultPublic()",
+          "getWinner()",
+          "getWinners()",
+          "addCandidate(string,string,string)",
+          "startElection()",
+          "endElection()",
+          "isValid(bytes32[],bytes32)",
+          "addTeacher(address)",
+          "removeTeacher(address)",
+          "pause()",
+          "unpause()",
+          "changeChairman(address)",
+          "closeElection()",
+          "isCreated()",
+          "isStarted()",
+          "isEnded()",
+          "isChairman()",
+          "isTeacher()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_paused",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Pausable",
+              "src": "@openzeppelin/contracts/security/Pausable.sol:28"
+            },
+            {
+              "label": "chairman",
+              "offset": 1,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:27"
+            },
+            {
+              "label": "position",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_string_storage",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:30"
+            },
+            {
+              "label": "description",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_string_storage",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:33"
+            },
+            {
+              "label": "root",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_bytes32",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:36"
+            },
+            {
+              "label": "candidatesCount",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_uint256",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:40"
+            },
+            {
+              "label": "electionCount",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint256",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:42"
+            },
+            {
+              "label": "startTimer",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:44"
+            },
+            {
+              "label": "teachers",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_mapping(t_address,t_bool)",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:47"
+            },
+            {
+              "label": "voted",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_mapping(t_address,t_bool)",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:51"
+            },
+            {
+              "label": "candidates",
+              "offset": 0,
+              "slot": "9",
+              "type": "t_mapping(t_uint256,t_struct(Candidate)321_storage)",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:55"
+            },
+            {
+              "label": "winnerId",
+              "offset": 0,
+              "slot": "10",
+              "type": "t_uint256",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:59"
+            },
+            {
+              "label": "winners",
+              "offset": 0,
+              "slot": "11",
+              "type": "t_mapping(t_uint256,t_struct(Election)329_storage)",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:63"
+            },
+            {
+              "label": "winnerVoteCount",
+              "offset": 0,
+              "slot": "12",
+              "type": "t_uint256",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:69"
+            },
+            {
+              "label": "Active",
+              "offset": 0,
+              "slot": "13",
+              "type": "t_bool",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:72"
+            },
+            {
+              "label": "Ended",
+              "offset": 1,
+              "slot": "13",
+              "type": "t_bool",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:74"
+            },
+            {
+              "label": "Created",
+              "offset": 2,
+              "slot": "13",
+              "type": "t_bool",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:77"
+            },
+            {
+              "label": "publicState",
+              "offset": 3,
+              "slot": "13",
+              "type": "t_bool",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:80"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_struct(Candidate)321_storage)": {
+              "label": "mapping(uint256 => struct ZuriElection.Candidate)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_struct(Election)329_storage)": {
+              "label": "mapping(uint256 => struct ZuriElection.Election)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_struct(Candidate)321_storage": {
+              "label": "struct ZuriElection.Candidate",
+              "members": [
+                {
+                  "label": "id",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "name",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "candidateHash",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "candidateManifesto",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "3"
+                },
+                {
+                  "label": "voteCount",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "4"
+                }
+              ],
+              "numberOfBytes": "160"
+            },
+            "t_struct(Election)329_storage": {
+              "label": "struct ZuriElection.Election",
+              "members": [
+                {
+                  "label": "position",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "description",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "winner",
+                  "type": "t_struct(Candidate)321_storage",
+                  "offset": 0,
+                  "slot": "2"
+                }
+              ],
+              "numberOfBytes": "224"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      }
+    },
+    {
+      "Pausable": {
+        "src": "@openzeppelin/contracts/security/Pausable.sol:17",
+        "inherit": [
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "paused()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Pausable",
+            "src": "@openzeppelin/contracts/security/Pausable.sol:33"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_paused",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Pausable",
+              "src": "@openzeppelin/contracts/security/Pausable.sol:28"
+            }
+          ],
+          "types": {
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MerkleProof": {
+        "src": "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol:15",
+        "version": {
+          "withMetadata": "28ad64bdeef677e05fdb002e4eae614ba04f49ba5368379503b99eda9c7f221c",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "ZuriElection": {
+        "src": "contracts/ZuriElection.sol:12",
+        "version": {
+          "withMetadata": "f56e7ac99ea012c6c92320bef8d770d52e06071566a0b16399b2855978fbb175",
+          "withoutMetadata": "4d9761d808ce19c7cf38cf6abfa61d2a15a86b4a14b77a0cce05b1b50e846b2a",
+          "linkedWithoutMetadata": "4d9761d808ce19c7cf38cf6abfa61d2a15a86b4a14b77a0cce05b1b50e846b2a"
+        },
+        "inherit": [
+          "Pausable",
+          "Context"
+        ],
+        "libraries": [
+          "MerkleProof"
+        ],
+        "methods": [
+          "(bytes32)",
+          "getCandidates()",
+          "vote(uint256)",
+          "setUpElection(string[])",
+          "makeResultPublic()",
+          "getWinner()",
+          "getWinners()",
+          "addCandidate(string,string,string)",
+          "startElection()",
+          "endElection()",
+          "isValid(bytes32[],bytes32)",
+          "addTeacher(address)",
+          "removeTeacher(address)",
+          "pause()",
+          "unpause()",
+          "changeChairman(address)",
+          "closeElection()",
+          "isCreated()",
+          "isStarted()",
+          "isEnded()",
+          "isChairman()",
+          "isTeacher()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_paused",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Pausable",
+              "src": "@openzeppelin/contracts/security/Pausable.sol:28"
+            },
+            {
+              "label": "chairman",
+              "offset": 1,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:27"
+            },
+            {
+              "label": "position",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_string_storage",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:30"
+            },
+            {
+              "label": "description",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_string_storage",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:33"
+            },
+            {
+              "label": "root",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_bytes32",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:36"
+            },
+            {
+              "label": "candidatesCount",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_uint256",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:40"
+            },
+            {
+              "label": "electionCount",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint256",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:42"
+            },
+            {
+              "label": "startTimer",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:44"
+            },
+            {
+              "label": "teachers",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_mapping(t_address,t_bool)",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:47"
+            },
+            {
+              "label": "voted",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_mapping(t_address,t_bool)",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:51"
+            },
+            {
+              "label": "candidates",
+              "offset": 0,
+              "slot": "9",
+              "type": "t_mapping(t_uint256,t_struct(Candidate)321_storage)",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:55"
+            },
+            {
+              "label": "winnerId",
+              "offset": 0,
+              "slot": "10",
+              "type": "t_uint256",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:59"
+            },
+            {
+              "label": "winners",
+              "offset": 0,
+              "slot": "11",
+              "type": "t_mapping(t_uint256,t_struct(Election)329_storage)",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:63"
+            },
+            {
+              "label": "winnerVoteCount",
+              "offset": 0,
+              "slot": "12",
+              "type": "t_uint256",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:69"
+            },
+            {
+              "label": "Active",
+              "offset": 0,
+              "slot": "13",
+              "type": "t_bool",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:72"
+            },
+            {
+              "label": "Ended",
+              "offset": 1,
+              "slot": "13",
+              "type": "t_bool",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:74"
+            },
+            {
+              "label": "Created",
+              "offset": 2,
+              "slot": "13",
+              "type": "t_bool",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:77"
+            },
+            {
+              "label": "publicState",
+              "offset": 3,
+              "slot": "13",
+              "type": "t_bool",
+              "contract": "ZuriElection",
+              "src": "contracts/ZuriElection.sol:80"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_struct(Candidate)321_storage)": {
+              "label": "mapping(uint256 => struct ZuriElection.Candidate)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_struct(Election)329_storage)": {
+              "label": "mapping(uint256 => struct ZuriElection.Election)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_struct(Candidate)321_storage": {
+              "label": "struct ZuriElection.Candidate",
+              "members": [
+                {
+                  "label": "id",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "name",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "candidateHash",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "candidateManifesto",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "3"
+                },
+                {
+                  "label": "voteCount",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "4"
+                }
+              ],
+              "numberOfBytes": "160"
+            },
+            "t_struct(Election)329_storage": {
+              "label": "struct ZuriElection.Election",
+              "members": [
+                {
+                  "label": "position",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "description",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "winner",
+                  "type": "t_struct(Candidate)321_storage",
+                  "offset": 0,
+                  "slot": "2"
+                }
+              ],
+              "numberOfBytes": "224"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      }
+    },
+    {
+      "Pausable": {
+        "src": "@openzeppelin/contracts/security/Pausable.sol:17",
+        "inherit": [
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "paused()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Pausable",
+            "src": "@openzeppelin/contracts/security/Pausable.sol:33"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_paused",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Pausable",
+              "src": "@openzeppelin/contracts/security/Pausable.sol:28"
+            }
+          ],
+          "types": {
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MerkleProof": {
+        "src": "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol:15",
+        "version": {
+          "withMetadata": "28ad64bdeef677e05fdb002e4eae614ba04f49ba5368379503b99eda9c7f221c",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "ZuriElection": {
+        "src": "contracts/ZuriElection.sol:12",
+        "version": {
           "withMetadata": "018c4f82e4fe6b34f34fc5cdb2aa1fb5c9ddc494d587ea0ddd7c77c32bcb78de",
           "withoutMetadata": "94a8a450f24965e6198804973d1c859733a2789de7e63105c7a3b49a16458ba5",
           "linkedWithoutMetadata": "94a8a450f24965e6198804973d1c859733a2789de7e63105c7a3b49a16458ba5"
