@@ -20,7 +20,7 @@ const Election = () => {
   const classes = useStyles();
   const globalStyles = useGlobalStyles();
 
-  const { currentAccount, connectWallet, isStudent, getProof, candidateCount, vote } = useContext(AppContext);
+  const { currentAccount, connectWallet, isStudent,  candidateCount, vote } = useContext(AppContext);
   const [candidateId, setCandidateId] = useState(0)
   const [show, setShow] = useState(false);
   const [contenders, setContenders] = useState([]);
@@ -89,13 +89,10 @@ const Election = () => {
 
   const voteCandidate = async (id) => {
     const contract = createEthereumContract();
-    
-    const hexProof = await getProof();
+  
     try {
-      console.log(hexProof);
-      alert(hexProof);
-
-      console.log((await contract.vote(contenders.id, hexProof)))
+      
+  await contract.vote(contenders.id)
     } catch (error) {
       console.log(error);
     }
