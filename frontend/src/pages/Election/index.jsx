@@ -1,34 +1,15 @@
-import classNames from 'classnames';
-import { useStyles } from './styles';
 import { ethers } from 'ethers';
-
-import { useGlobalStyles } from '../../styles';
-import { Link } from 'react-router-dom';
-import { useCallback, useContext, useState, useEffect } from 'react';
-import { Typography } from '@mui/material';
-import { AppContext } from '../../context/AppContext';
-import Modal from 'react-bootstrap/Modal';
-import { confirmAlert } from 'react-confirm-alert'; // Import
+import { useState, useEffect } from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { contractAddress } from '../constants/constant';
 import abi from '../constants/abi.json';
-import { getProviderInfoFromChecksArray } from 'web3modal';
+import { Card, Col, Row } from 'antd';
 
 const { ethereum } = window;
 
 const Election = () => {
-  const classes = useStyles();
-  const globalStyles = useGlobalStyles();
-
-  const { currentAccount, connectWallet, isStudent,  candidateCount, vote } = useContext(AppContext);
-  const [candidateId, setCandidateId] = useState(0)
-  const [show, setShow] = useState(false);
   const [contenders, setContenders] = useState([]);
-  const [contract, setContract] = useState('');
   const [candidatesBool, showCandidates] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   // fetch contract
   const createEthereumContract = () => {
@@ -37,27 +18,6 @@ const Election = () => {
     const ZuriContract = new ethers.Contract(contractAddress, abi.abi, signer);
 
     return ZuriContract;
-  };
-
-  // useEffect(() => {
-  //   createEthereumContract();
-  // }, [])
-
-  const handleVote = () => {
-    confirmAlert({
-      title: 'Confirm to submit',
-      message: 'Are you sure, You want to vote for this person',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: () => alert('Click Yes'),
-        },
-        {
-          label: 'No',
-          onClick: () => alert('Click No'),
-        },
-      ],
-    });
   };
 
   //  get all candidates
@@ -91,15 +51,16 @@ const Election = () => {
 
   const voteCandidate = async (id) => {
     const contract = createEthereumContract();
-  
+
     try {
-      
-  await contract.vote(id);
+
+      await contract.vote(id);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const manifesto = "My purpose is to unite the world through sport to create a healthy planet, active communities and an equal playing field for all."
   useEffect(() => {
     fetch();
   }, [showCandidates]);
@@ -111,39 +72,29 @@ const Election = () => {
           <div className="row">
             <div className="d-flex justify-content-end">
               <button className="btn btn-lg btn-danger me-2" onClick={() => showCandidates(true)}>
-                Get Candidates
+                View Candidates
               </button>
             </div>
           </div>
         </div>
-        {/* {console.log(contenders)} */}
-        {/* {console.log(candidatesBool)} */}
-        <div className="grid grid-cols-3 gap-4 py-5">
-          {candidatesBool &&
-            contenders.map((contender, index) => (
-              <div key={index} className="max-w-sm basis-1/3 rounded shadow-lg">
-                <img
-                  className="w-full"
-                  src="images/profile.jpg"
-                  alt={`${contender.name} with ${contender.count} votes`}
-                />
-                <div className="px-6 py-2">
-                  <div className="font-bold text-xl mb-2">{contender.name}</div>
-                  <p className="text-gray-700 text-base">
-                    {contender.votes} votes
-                  </p>
-                </div>
-              <div className="px-2 flex pt-2 pb-2">
-                <span onClick={()=>console.log("view candidate")} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">View Candidate</span>
-                <span onClick={()=> {
-                  voteCandidate(contender._id); 
+        <div className="grid grid-cols-3 px-5 gap-4 py-5">
+          {candidatesBool && contenders.map((contender, index) => (
+            <div key={index} class="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+              <img class="rounded-t-lg " src="images/profile-pic.png" alt={`${contender.name} with ${contender.votes} votes`} />
+              <div class="px-3 py-2">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{contender.name}</h5>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{contender.votes} votes</p>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{manifesto}</p>
+                <button onClick={() => {
+                  voteCandidate(contender._id);
                   // console.log(contender._id)
-                  }} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Vote Candidate</span>
+                }} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 my-1 px-4 rounded-full">
+                  Vote Candidate
+                </button>
               </div>
             </div>
 
-          ))
-          }
+          ))}
         </div>
       </section>
     </main>

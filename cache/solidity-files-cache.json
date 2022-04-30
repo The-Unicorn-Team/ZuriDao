@@ -1,9 +1,9 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "C:\\Users\\DELL\\ZuriDao\\contracts\\ZuriElection.sol": {
-      "lastModificationDate": 1651250046040,
-      "contentHash": "8e1f08dcc72477b526c9ff29cd5fb6f4",
+    "/Users/samuelokpe/Documents/GitHub/ZuriDao/contracts/ZuriElection.sol": {
+      "lastModificationDate": 1651313289517,
+      "contentHash": "1f81fdad0e35f2209151fc2d0e1179e8",
       "sourceName": "contracts/ZuriElection.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -26,6 +26,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -40,8 +43,8 @@
         "ZuriElection"
       ]
     },
-    "C:\\Users\\DELL\\ZuriDao\\node_modules\\@openzeppelin\\contracts\\security\\Pausable.sol": {
-      "lastModificationDate": 1651259572134,
+    "/Users/samuelokpe/Documents/GitHub/ZuriDao/node_modules/@openzeppelin/contracts/security/Pausable.sol": {
+      "lastModificationDate": 1650477862013,
       "contentHash": "9c2dccab8e3a43a18c41e358763fe4d8",
       "sourceName": "@openzeppelin/contracts/security/Pausable.sol",
       "solcConfig": {
@@ -65,6 +68,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -78,8 +84,8 @@
         "Pausable"
       ]
     },
-    "C:\\Users\\DELL\\ZuriDao\\node_modules\\@openzeppelin\\contracts\\utils\\cryptography\\MerkleProof.sol": {
-      "lastModificationDate": 1651259571985,
+    "/Users/samuelokpe/Documents/GitHub/ZuriDao/node_modules/@openzeppelin/contracts/utils/cryptography/MerkleProof.sol": {
+      "lastModificationDate": 1650477862012,
       "contentHash": "b919f5fbfe0ab75cc71f2d361eac7f4b",
       "sourceName": "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol",
       "solcConfig": {
@@ -103,6 +109,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -114,8 +123,8 @@
         "MerkleProof"
       ]
     },
-    "C:\\Users\\DELL\\ZuriDao\\node_modules\\@openzeppelin\\contracts\\utils\\Context.sol": {
-      "lastModificationDate": 1651259559329,
+    "/Users/samuelokpe/Documents/GitHub/ZuriDao/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1650477861996,
       "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
@@ -139,6 +148,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
