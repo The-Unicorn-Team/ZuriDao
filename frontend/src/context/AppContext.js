@@ -14,8 +14,12 @@ export const AppContextProvider = ({ children }) => {
     const [isCreated, setIsCreated] = useState(false);
     const [isStarted, setIsStarted] = useState(false);
     const [isTeacher, setIsTeacher] = useState(false);
-    const [isStudent, setIsStudent] = useState(false)
-
+    const [isStudent, setIsStudent] = useState(false);
+    const [elections, setElections] = useState([]);
+ 
+    const stakeholders = [
+      "0x9F6Dd51f7a18Ce5D6FaFF9e5d3e5764Cca61cC44","0x20497F37a8169c8C9fA09411F8c2CFB7c90dE5d1","0x70FADB1887f906dF7060330b61ed16434d82189f","0x3849DDF392848582b860982740615b43AA537aC2","0x5d16FA7F1f7513e4603103dc353A284aA96BA7f4","0x7F913b411F2C509dc1C8271aFb26160223fa6be8"
+  ]
       
     const createEthereumContract = () => {
       const provider = new ethers.providers.Web3Provider(ethereum);
@@ -199,6 +203,18 @@ export const AppContextProvider = ({ children }) => {
      
      }
     }
+
+    const getElections = async () => {
+      const contract = createEthereumContract();
+      try {
+        const  result = await contract.getWinners();
+        setElections(result); 
+       }
+      catch(error){
+        console.log(error)
+       
+      }
+    }
     
     
     const removeTeacher = async(addr) => {
@@ -331,6 +347,7 @@ export const AppContextProvider = ({ children }) => {
             getCandidates, 
             setUpElection, 
             addContender, 
+            elections,
             isChairman,
             isCreated,
             isStarted,
