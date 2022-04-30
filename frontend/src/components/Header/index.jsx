@@ -84,7 +84,7 @@ const Header = () => {
       <div>
         <ul className=" space-x-8 sm:flex hidden" >
           <Link to="/elections" className=" text-decoration-none">
-          <li className=" text-gray-500 font-semibold cursor-pointer hover:bg-blue-300  hover:bg-opacity-25 px-3 py-2 rounded-md translate-x-1 duration-1000">Student Portal</li>
+          <li className=" text-gray-500 font-semibold cursor-pointer hover:bg-blue-300  hover:bg-opacity-25 px-3 py-2 rounded-md translate-x-1 duration-1000">Voting Portal</li>
           </Link>
           {isChairman || isTeacher ? (
             (<Link to="/admin" className=" text-decoration-none">
