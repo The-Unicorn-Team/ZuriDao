@@ -2,16 +2,24 @@
 pragma solidity ^0.8.0;
 
 /// @notice imported contracts from openzepplin to pause, verify proof and upgrade contract
-import "@openzeppelin/contracts/security/Pausable.sol";
+
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+
 
 /// @author Wande for Team Unicorn
 /// @title ZuriElection
 /// @notice You can use this contract for election amongst known stakeholders
 /// @dev All function calls are currently implemented without side effects
-contract ZuriElection is Pausable {
+contract ZuriElection is Initializable, PausableUpgradeable, UUPSUpgradeable {
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor(bytes32 merkleRoot) {
+ 
+
+    constructor() initializer {}
+
+    function initialize(bytes32 merkleRoot) initializer public {
         chairman = msg.sender;
         Active = false;
         Ended = false;
@@ -19,6 +27,9 @@ contract ZuriElection is Pausable {
         candidatesCount = 0;
         root = merkleRoot;
         publicState = false;
+        __UUPSUpgradeable_init();
+        __Pausable_init();
+
     }
 
     /// =================== VARIABLES ================================
@@ -38,8 +49,9 @@ contract ZuriElection is Pausable {
     ///@notice count of candidates
     ///@dev count to keep track of number of candidates
     uint256 public candidatesCount;
+
     ///@notice variable to track number of election held
-    uint256 electionCount;
+    uint256 public electionCount;
     ///@notice variable to track time
     uint256 public startTimer;
     ///@dev mapping of address for teachers
@@ -50,19 +62,16 @@ contract ZuriElection is Pausable {
     ///@dev mapping of address to bool to keep track of votes
     mapping(address => bool) public voted;
 
+    ///@notice mapping of election ID to winnerID
+    mapping(uint => uint) prevWinners;
+
     ///@notice list of candidates
     ///@dev mapping to unsigned integers to struct of candidates
     mapping(uint256 => Candidate) public candidates;
 
     ///@notice variable to track winning candidate
     ///@dev an array that returns id of winning candidate(s)
-    uint256 public winnerId;
-
-    ///@notice variable to track winning candidate
-    ///@dev an array that returns id of winning candidate(s)
-    mapping(uint256 => Election) public winners;
-
-    
+    uint256[] public winnerIds;
 
     ///@notice count of vote of winning id
     ///@dev variable to track to vote count of items in winnerids array
@@ -81,6 +90,7 @@ contract ZuriElection is Pausable {
 
     ///@dev struct of candidates with variables to track name , id and voteCount
     struct Candidate {
+        uint256 electionId;
         uint256 id;
         string name;
         string candidateHash;
@@ -88,20 +98,21 @@ contract ZuriElection is Pausable {
         uint256 voteCount;
     }
 
-    struct Election {
-        string position;
-        string description;
-        Candidate winner;
-    }
-
     
     ///================== PUBLIC FUNCTIONS =============================
 
-    function getCandidates() public view  returns (Candidate[] memory) {
+     function _authorizeUpgrade(address newImplementation)
+        internal
+        onlyChairman
+        override
+    {}
+
+    function getCandidates(uint _electionId) public view  returns (Candidate[] memory) {
         Candidate[] memory contestants = new Candidate[] (candidatesCount);
         for(uint i=0; i < candidatesCount; i++){
-            Candidate storage candidate = candidates[i];
-            contestants[i] = candidate;
+            if(candidates[i + 1].electionId == _electionId)
+           { Candidate storage candidate = candidates[i];
+            contestants[i] = candidate;}
 
         }
         return contestants;
@@ -154,19 +165,11 @@ contract ZuriElection is Pausable {
         publicState = true;
     }
 
-    function getWinner() public view  returns (uint256, uint256){
+    function getWinner() public view  returns (uint256, uint256[] memory){
         require(publicState, "The Results must be made public");
-        return (winnerVoteCount, winnerId);
-    }
+        
+        return (winnerVoteCount, winnerIds);
 
-    function getWinners() public view returns (Election[] memory){
-         Election[] memory elections = new Election[] (electionCount);
-        for(uint i=0; i < electionCount; i++){
-            Election storage winner = winners[i];
-            elections[i] = winner;
-
-        }
-        return elections;
     }
 
     
@@ -197,6 +200,7 @@ contract ZuriElection is Pausable {
             "only teachers/chairman can call this function"
         );
         candidates[candidatesCount] = Candidate({
+            electionId: electionCount,
             id: candidatesCount,
             name: _name,
             candidateHash : _candidateHash,
@@ -212,24 +216,23 @@ contract ZuriElection is Pausable {
     function _calcElectionWinner()
         internal
         whenNotPaused
-        returns (uint256, uint256)
+        returns (uint256, uint256[] memory)
     {
-        
         for (uint256 i; i < candidatesCount; i++) {
             ///@notice this handles the winner vote count
-            if (candidates[i].voteCount >= winnerVoteCount) {
+            if (candidates[i].voteCount > winnerVoteCount) {
                 winnerVoteCount = candidates[i].voteCount;
-                winnerId = candidates[i].id;
+                delete winnerIds;
+                winnerIds.push(candidates[i].id);
+                prevWinners[electionCount] = candidates[i].id;
+            }
+            ///@notice this handles ties
+            else if (candidates[i].voteCount == winnerVoteCount) {
+                winnerIds.push(candidates[i].id);
             }
         }
-
-
-        winners[electionCount] = Election({
-            position: position,
-            description : description,
-            winner: candidates[winnerId]
-        });
-        return (winnerVoteCount, winnerId);
+        
+        return (winnerVoteCount, winnerIds);
 
     }
 
@@ -237,6 +240,7 @@ contract ZuriElection is Pausable {
     ///@dev function changes the boolean value of the ACTIVE variable
     function startElection() public whenNotPaused onlyChairman {
         Active = true;
+        startTimer = block.timestamp;
     }
 
     /// @notice function to end election
@@ -244,7 +248,7 @@ contract ZuriElection is Pausable {
     function endElection() public whenNotPaused onlyChairman {
         Ended = true;
         _calcElectionWinner();
-        emit ElectionEnded(winnerId, winnerVoteCount);
+        emit ElectionEnded(winnerIds, winnerVoteCount);
     }
 
     ///@notice function to verify stakeholders
@@ -311,6 +315,7 @@ contract ZuriElection is Pausable {
         Created = false;
         candidatesCount = 0;
         publicState = false;
+        delete winnerIds;
         winnerVoteCount = 0;
     }
 
@@ -371,7 +376,7 @@ contract ZuriElection is Pausable {
 
     ///======================= EVENTS & ERRORS ==============================
     ///@notice event to emit when the contract is unpaused
-    event ElectionEnded(uint256 _winnerId, uint256 _winnerVoteCount);
+    event ElectionEnded(uint256[] _winnerIds, uint256 _winnerVoteCount);
     ///@notice event to emit when candidate has been created
     event CandidateCreated(uint256 _candidateId, string _candidateName);
     ///@notice event to emit when a candidate us voted for
