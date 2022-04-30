@@ -56,7 +56,7 @@ contract ZuriElection is Pausable {
 
     ///@notice variable to track winning candidate
     ///@dev an array that returns id of winning candidate(s)
-    uint256[] public winnerIds;
+    uint256 public winnerId;
 
     ///@notice variable to track winning candidate
     ///@dev an array that returns id of winning candidate(s)
@@ -154,9 +154,9 @@ contract ZuriElection is Pausable {
         publicState = true;
     }
 
-    function getWinner() public view  returns (uint256, uint256[] memory){
+    function getWinner() public view  returns (uint256, uint256){
         require(publicState, "The Results must be made public");
-        return (winnerVoteCount, winnerIds);
+        return (winnerVoteCount, winnerId);
     }
 
     function getWinners() public view returns (Election[] memory){
@@ -212,18 +212,14 @@ contract ZuriElection is Pausable {
     function _calcElectionWinner()
         internal
         whenNotPaused
-        returns (uint256, uint256[] memory)
+        returns (uint256, uint256)
     {
+        
         for (uint256 i; i < candidatesCount; i++) {
             ///@notice this handles the winner vote count
-            if (candidates[i].voteCount > winnerVoteCount) {
+            if (candidates[i].voteCount >= winnerVoteCount) {
                 winnerVoteCount = candidates[i].voteCount;
-                delete winnerIds;
-                winnerIds.push(candidates[i].id);
-            }
-            ///@notice this handles ties
-            else if (candidates[i].voteCount == winnerVoteCount) {
-                winnerIds.push(candidates[i].id);
+                winnerId = candidates[i].id;
             }
         }
 
@@ -231,9 +227,9 @@ contract ZuriElection is Pausable {
         winners[electionCount] = Election({
             position: position,
             description : description,
-            winner: candidates[winnerIds[0]]
+            winner: candidates[winnerId]
         });
-        return (winnerVoteCount, winnerIds);
+        return (winnerVoteCount, winnerId);
 
     }
 
@@ -248,7 +244,7 @@ contract ZuriElection is Pausable {
     function endElection() public whenNotPaused onlyChairman {
         Ended = true;
         _calcElectionWinner();
-        emit ElectionEnded(winnerIds, winnerVoteCount);
+        emit ElectionEnded(winnerId, winnerVoteCount);
     }
 
     ///@notice function to verify stakeholders
@@ -315,7 +311,6 @@ contract ZuriElection is Pausable {
         Created = false;
         candidatesCount = 0;
         publicState = false;
-        delete winnerIds;
         winnerVoteCount = 0;
     }
 
@@ -376,7 +371,7 @@ contract ZuriElection is Pausable {
 
     ///======================= EVENTS & ERRORS ==============================
     ///@notice event to emit when the contract is unpaused
-    event ElectionEnded(uint256[] _winnerIds, uint256 _winnerVoteCount);
+    event ElectionEnded(uint256 _winnerId, uint256 _winnerVoteCount);
     ///@notice event to emit when candidate has been created
     event CandidateCreated(uint256 _candidateId, string _candidateName);
     ///@notice event to emit when a candidate us voted for

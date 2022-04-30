@@ -12,7 +12,7 @@ import { AppContext } from '../../context/AppContext';
 const Home = () => {
   const classes = useStyles();
   const globalStyles = useGlobalStyles();
-  const { currentAccount, connectWallet , isStudent , getCandidates} = useContext(AppContext);
+  const { currentAccount, connectWallet , getCandidates, elections} = useContext(AppContext);
   
   const submitHandler = (event) => {
     event.preventDefault();
