@@ -1,6 +1,4 @@
 import { createContext, useState, useEffect} from 'react';
-import {MerkleTree} from "merkletreejs"
-import {keccak256} from "keccak256"
 import { contractAddress } from "../pages/constants/constant";
 import abi from "../pages/constants/abi.json";
 import { ethers } from 'ethers';
@@ -329,20 +327,8 @@ export const AppContextProvider = ({ children }) => {
       window.location.reload();
     }
 
-    const getProof = (currentAccount) => {
+    
 
-     
-    
-    // this creates a new array "leafnodes" by hashing the index of all stakeholders addresses using keccak256
-    //then we create a merkletree object 
-    const leafnodes = stakeholders.map(addr => keccak256(addr))
-    
-    const merkleTree = new MerkleTree(leafnodes, keccak256, {sortPairs: true})
-    const test = keccak256(currentAccount)
-    const hexProof = merkleTree.getHexProof(test);
-      return hexProof
-    }
-    
     useEffect(() => {
       checkIfWalletIsConnect();
     }, []);
@@ -367,7 +353,7 @@ export const AppContextProvider = ({ children }) => {
             isStarted,
             isTeacher,
             makeResultsPublic, 
-            getProof,
+            
             vote, 
             startElection,
             endElection,

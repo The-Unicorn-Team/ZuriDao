@@ -20,7 +20,7 @@ const Election = () => {
   const classes = useStyles();
   const globalStyles = useGlobalStyles();
 
-  const { currentAccount, connectWallet, isStudent, getProof, candidateCount, vote } = useContext(AppContext);
+  const { currentAccount, connectWallet, isStudent,  candidateCount, vote } = useContext(AppContext);
   const [candidateId, setCandidateId] = useState(0)
   const [show, setShow] = useState(false);
   const [contenders, setContenders] = useState([]);
@@ -79,9 +79,11 @@ const Election = () => {
     result.map((item) => {
       candidateArray.push({
         id: Number(ethers.utils.hexValue(item.id._hex).slice(2)),
+        _id: item.id,
         name: item.name,
         votes: Number(ethers.utils.hexValue(item.voteCount._hex).slice(2)),
       });
+      console.log(candidateArray[0]._id._hex);
       setContenders(candidateArray);
       // console.log(contenders)
     });
@@ -89,13 +91,10 @@ const Election = () => {
 
   const voteCandidate = async (id) => {
     const contract = createEthereumContract();
-    
-    const hexProof = await getProof();
+  
     try {
-      console.log(hexProof);
-      alert(hexProof);
-
-      console.log((await contract.vote(contenders.id, hexProof)))
+      
+  await contract.vote(id);
     } catch (error) {
       console.log(error);
     }
@@ -136,7 +135,10 @@ const Election = () => {
                 </div>
               <div className="px-2 flex pt-2 pb-2">
                 <span onClick={()=>console.log("view candidate")} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">View Candidate</span>
-                <span onClick={()=> voteCandidate(contender.id)} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Vote Candidate</span>
+                <span onClick={()=> {
+                  voteCandidate(contender._id); 
+                  // console.log(contender._id)
+                  }} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Vote Candidate</span>
               </div>
             </div>
 
