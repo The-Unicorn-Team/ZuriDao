@@ -41,25 +41,32 @@ const App = () => {
       <StylesProvider injectFirst>
         <ThemeProvider theme={theme}>
           <AppContextProvider>
-            <Router>
-              <Header />
-              <Routes>
-                <Route exact path="/pricing" element={<PricingPage />} />
-                <Route exact path="/contact" element={<ContactPage />} />
-                <Route exact path="/about-us" element={<AboutUsPage />} />
-                <Route exact path="/elections" element={<ElectionsPage />} />
-                <Route exact path="/add-election" element={<AddElection />} />
-                <Route exact path="/election" element={<Election />} />
-                <Route exact path="/" element={<HomePage />} />
-                <Route exact path="/admin" element={<Admin />} />
-              </Routes>
-               <Footer /> 
-            </Router>
+            {/* <div className='h-40'> */}
+              <Router>
+                {/* <div className='min-h-screen'> */}
+                  <Header />
+                {/* </div> */}
+                {/* <div className='min-h-screen'> */}
+                  <Routes>
+                    <Route exact path="/pricing" element={<PricingPage />} />
+                    <Route exact path="/contact" element={<ContactPage />} />
+                    <Route exact path="/about-us" element={<AboutUsPage />} />
+                    <Route exact path="/elections" element={<ElectionsPage />} />
+                    <Route exact path="/add-election" element={<AddElection />} />
+                    <Route exact path="/election" element={<Election />} />
+                    <Route exact path="/" element={<HomePage />} />
+                    <Route exact path="/admin" element={<Admin />} />
+                  </Routes>
+                {/* </div> */}
+                {/* <div className='h-40'> */}
+                  <Footer />
+                {/* </div> */}
+              </Router>
+            {/* </div> */}
           </AppContextProvider>
         </ThemeProvider>
       </StylesProvider>
-    </>
-  );
+    </>);
 };
 
 export default App;
