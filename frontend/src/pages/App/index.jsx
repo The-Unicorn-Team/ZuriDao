@@ -41,12 +41,9 @@ const App = () => {
       <StylesProvider injectFirst>
         <ThemeProvider theme={theme}>
           <AppContextProvider>
-            {/* <div className='h-40'> */}
               <Router>
-                {/* <div className='min-h-screen'> */}
+                <div className='h-screen'>
                   <Header />
-                {/* </div> */}
-                {/* <div className='min-h-screen'> */}
                   <Routes>
                     <Route exact path="/pricing" element={<PricingPage />} />
                     <Route exact path="/contact" element={<ContactPage />} />
@@ -57,12 +54,9 @@ const App = () => {
                     <Route exact path="/" element={<HomePage />} />
                     <Route exact path="/admin" element={<Admin />} />
                   </Routes>
-                {/* </div> */}
-                {/* <div className='h-40'> */}
                   <Footer />
-                {/* </div> */}
+                </div>
               </Router>
-            {/* </div> */}
           </AppContextProvider>
         </ThemeProvider>
       </StylesProvider>
