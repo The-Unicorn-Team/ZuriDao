@@ -42,9 +42,11 @@ const Election = () => {
         _id: item.id,
         name: item.name,
         votes: Number(ethers.utils.hexValue(item.voteCount._hex).slice(2)),
+        hash : item.candidateHash,
       });
       console.log(candidateArray[0]._id._hex);
       setContenders(candidateArray);
+      console.log(candidateArray);
       // console.log(contenders)
     });
   };
@@ -77,10 +79,10 @@ const Election = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-3 px-5 gap-4 py-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 px-3 md:px-5 gap-4 py-5">
           {candidatesBool && contenders.map((contender, index) => (
             <div key={index} class="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
-              <img class="rounded-t-lg " src="images/profile-pic.png" alt={`${contender.name} with ${contender.votes} votes`} />
+              <img class="rounded-t-lg " src={"https://ipfs.infura.io/ipfs/" +contender.hash} alt={`${contender.name} with ${contender.votes} votes`} />
               <div class="px-3 py-2">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{contender.name}</h5>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{contender.votes} votes</p>

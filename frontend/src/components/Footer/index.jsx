@@ -14,7 +14,7 @@ const Footer = () => {
     return (
       <footer
         className={classNames(
-          'flex flex-col items-center bg-no-repeat pt-8 pb-12',
+          'flex flex-col items-center sticky bottom-0 bg-no-repeat pt-8 pb-12',
           classes.footer,
           globalStyles.px,
           'sm:flex-row sm:justify-between sm:pb-8',

@@ -52,13 +52,9 @@ const Admin = () => {
   const { ethereum } = window;
 
   const Election = () => {
-    const classes = useStyles();
-    const globalStyles = useGlobalStyles();
     const { startElection, getWinner } = useContext(AppContext);
-    const [candidateId, setCandidateId] = useState(0);
     const [show, setShow] = useState(false);
     const [contenders, setContenders] = useState([]);
-    const [contract, setContract] = useState('');
     const [candidatesBool, showCandidates] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -186,54 +182,51 @@ const Admin = () => {
         </div>
       </div>
 
-      <div className="w-1/2 justify-center align-items-center">
+      <div className=" justify-center align-items-center">
         <section
-          className={classNames(
-            globalStyles.px,
-            classes.hero,
-            'bg-no-repeat flex flex-col pb-2',
-          )}>
-          <div className="col-md-9">
-            <div className="row">
-              <form class="row g-3">
-                <div class="col-12">
-                  <label for="inputAddress" class="form-label">
-                    Address
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputAddress"
-                    placeholder="Enter Address"
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
-                </div>
-                <div class="col-12">
-                  <button
-                    type="submit"
-                    class="btn btn-primary mr-7"
-                    onClick={handleAdd}>
-                    Add Teacher
-                  </button>
-                  {'     '} {'     '}{' '}
-                  <button
-                    type="submit"
-                    class=" pl-9 btn btn-warning"
-                    onClick={handleRemove}>
-                    Remove Teacher
-                  </button>
-                </div>
-              </form>
-            </div>
-            <br />
-            <br />
-            <div>
+          className={
+            classNames()
+            // globalStyles.px,
+            // classes.hero,
+            // 'bg-no-repeat flex pb-2',
+          }>
+          <form class="flex flex-col px-3 space-y-5 md:space-y-none justify-center py-3">
+            <div class="">
               <label for="inputAddress" class="form-label">
-                CHAIRMAN
+                Address Of Teacher to be Added or Removed
               </label>
               <input
                 type="text"
                 class="form-control"
+                id="inputAddress"
+                placeholder="Enter Address"
+                onChange={(e) => setAddress(e.target.value)}
+              />
+            </div>
+            <div class="flex ">
+              <button
+                type="submit"
+                class="btn btn-primary mr-7"
+                onClick={handleAdd}>
+                Add Teacher
+              </button>
+              {'     '} {'     '}{' '}
+              <button
+                type="submit"
+                class=" pl-9 btn btn-warning"
+                onClick={handleRemove}>
+                Remove Teacher
+              </button>
+            </div>
+          </form>
+          <form className="px-3 space-y-3 md:space-y-none justify-center py-3">
+            <div>
+              <label for="inputAddress" class="form-label">
+                Address to be given Chairman Role
+              </label>
+              <input
+                type="text"
+                className="form-control"
                 id="inputAddress"
                 placeholder="Enter Address"
                 onChange={(e) => setChairman(e.target.value)}
@@ -242,25 +235,22 @@ const Admin = () => {
             <div>
               <button
                 type="submit"
-                class="btn btn-primary mr-7 mt-2"
+                className="btn btn-primary mr-7 mt-2"
                 onClick={handleChair}>
                 changeChairman
               </button>
             </div>
-            <br />
-            <br />
-            <br />
-            <br />
-            <button
-              className="btn btn-lg btn-success"
-              onClick={unPauseContract}>
-              Restart Contract
-            </button>
-            <br />
-            <br />
-            <button className="btn btn-lg btn-danger" onClick={pauseContract}>
-              Pause Contract
-            </button>
+          </form>
+          <div className="py-5 flex flex-col px-3">
+            <p>Restart / Pause Contracts</p>
+            <div className='flex justify-between'>
+              <button className="btn btn-success" onClick={unPauseContract}>
+                Restart Contract
+              </button>
+              <button className="btn btn-danger" onClick={pauseContract}>
+                Pause Contract
+              </button>
+            </div>
           </div>
         </section>
       </div>

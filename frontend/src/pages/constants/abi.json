@@ -1,14 +1,14 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "zdao",
-  "sourceName": "contracts/zdao.sol",
+  "contractName": "ZuriElection",
+  "sourceName": "contracts/ZuriElection.sol",
   "abi": [
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_cryptoDevsNFT",
-          "type": "address"
+          "internalType": "bytes32",
+          "name": "merkleRoot",
+          "type": "bytes32"
         }
       ],
       "stateMutability": "nonpayable",
@@ -319,7 +319,7 @@
               "type": "uint256"
             }
           ],
-          "internalType": "struct zdao.Candidate[]",
+          "internalType": "struct ZuriElection.Candidate[]",
           "name": "",
           "type": "tuple[]"
         }
@@ -389,12 +389,12 @@
                   "type": "uint256"
                 }
               ],
-              "internalType": "struct zdao.Candidate",
+              "internalType": "struct ZuriElection.Candidate",
               "name": "winner",
               "type": "tuple"
             }
           ],
-          "internalType": "struct zdao.Election[]",
+          "internalType": "struct ZuriElection.Election[]",
           "name": "",
           "type": "tuple[]"
         }
@@ -457,6 +457,30 @@
     {
       "inputs": [],
       "name": "isTeacher",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "proof",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "leaf",
+          "type": "bytes32"
+        }
+      ],
+      "name": "isValid",
       "outputs": [
         {
           "internalType": "bool",
@@ -598,6 +622,11 @@
           "internalType": "uint256",
           "name": "_candidateId",
           "type": "uint256"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "hexProof",
+          "type": "bytes32[]"
         }
       ],
       "name": "vote",
@@ -698,7 +727,7 @@
               "type": "uint256"
             }
           ],
-          "internalType": "struct zdao.Candidate",
+          "internalType": "struct ZuriElection.Candidate",
           "name": "winner",
           "type": "tuple"
         }
