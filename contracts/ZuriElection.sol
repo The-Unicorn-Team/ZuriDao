@@ -306,43 +306,7 @@ contract ZuriElection is Initializable, PausableUpgradeable, UUPSUpgradeable {
         chairman = _newChairman;
     }
 
-    ///@notice function to close the election
-    function closeElection() public onlyChairman{
-        Created = false;
-         chairman = msg.sender;
-        Active = false;
-        Ended = false;
-        Created = false;
-        candidatesCount = 0;
-        publicState = false;
-        delete winnerIds;
-        winnerVoteCount = 0;
-    }
-
-    ///@notice to check If election has been created
-    function isCreated() public view returns(bool){
-        return Created;
-    }
-
-    ///@notice function to check if election has been started
-    function isStarted() public view returns (bool){
-        return Active;
-    }
-
-    ///@notice function to check if election has been ended
-    function isEnded() public view returns (bool){
-        return Ended;
-    }
-
-    ///@notice function to check if addr is chairman
-    function isChairman() public view  returns (bool){
-        return chairman == msg.sender;
-    }
-
-    ///@notice function to check if election has been started
-    function isTeacher() public view  returns (bool){
-        return teachers[msg.sender];
-    }
+  
 
 
     /// ======================= MODIFIERS =================================
