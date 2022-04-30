@@ -92,7 +92,7 @@ const Election = () => {
   
     try {
       
-  await contract.vote(contenders.id)
+  await contract.vote(0)
     } catch (error) {
       console.log(error);
     }
