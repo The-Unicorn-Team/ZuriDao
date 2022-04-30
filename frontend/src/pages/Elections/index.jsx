@@ -12,8 +12,7 @@ import { AppContext } from '../../context/AppContext';
 const Home = () => {
   const classes = useStyles();
   const globalStyles = useGlobalStyles();
-  const [electionBool, setElectionBool] = useState(false);
-  const { currentAccount, connectWallet , getCandidates, elections, isCreated} = useContext(AppContext);
+  const { currentAccount, connectWallet , getCandidates, elections} = useContext(AppContext);
   
   const submitHandler = (event) => {
     event.preventDefault();
@@ -27,21 +26,6 @@ const Home = () => {
     ),
     [classes]
   );
-
-  console.log(elections);
-
-  useEffect(() => {
-    if(isCreated){
-      window.location.href= "/election";
-      return;
-    }else{
-      if(elections.length > 0){
-        setElectionBool(true);
-      }
-    }
-  }, []);
-
-  
   
 
 
@@ -56,23 +40,24 @@ const Home = () => {
       >
 
         
-        {electionBool ? 
-          elections.map((election, index)=>{  <div className="container">
-                <div className="col-4">
+        {!isStudent ? (
+            <div className="container">
+                <div className="md:col-4">
                     <div className="card">
                         <div className="card-body">
-                            <h5 className="card-title">{election.name}</h5>
-                            <p className="card-text">{election.description}</p>
+                            <h5 className="card-title">Presidential Election</h5>
+                            <h6 className="card-subtitle mb-2 text-muted">4 Candidates Running</h6>
+                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                             <Link to="/election" className="btn btn-primary">View Election</Link>
                         </div>
                     </div>
                 </div>
             </div>
-          }) : (
+        ) : (
             <div className="container">
                 <div className="row">
                     <div className="display-3">
-                        There are no elections at the moment
+                        This page is only accessible to the chairman and teachers
                     </div>
                 </div>
             </div>

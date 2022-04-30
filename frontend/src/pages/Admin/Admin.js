@@ -226,7 +226,7 @@ const Admin = () => {
               </label>
               <input
                 type="text"
-                className="form-control"
+                class="form-control"
                 id="inputAddress"
                 placeholder="Enter Address"
                 onChange={(e) => setChairman(e.target.value)}
@@ -235,7 +235,7 @@ const Admin = () => {
             <div>
               <button
                 type="submit"
-                className="btn btn-primary mr-7 mt-2"
+                class="btn btn-primary mr-7 mt-2"
                 onClick={handleChair}>
                 changeChairman
               </button>
