@@ -42,7 +42,7 @@ const Home = () => {
         
         {!isStudent ? (
             <div className="container">
-                <div className="col-4">
+                <div className="md:col-4">
                     <div className="card">
                         <div className="card-body">
                             <h5 className="card-title">Presidential Election</h5>
