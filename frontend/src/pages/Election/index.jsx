@@ -79,7 +79,7 @@ const Election = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-3 px-5 gap-4 py-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 px-3 md:px-5 gap-4 py-5">
           {candidatesBool && contenders.map((contender, index) => (
             <div key={index} class="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
               <img class="rounded-t-lg " src={"https://ipfs.infura.io/ipfs/" +contender.hash} alt={`${contender.name} with ${contender.votes} votes`} />
