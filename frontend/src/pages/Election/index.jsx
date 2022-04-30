@@ -57,6 +57,8 @@ const Election = () => {
     try {
 
       await contract.vote(id);
+
+      alert("Voting Succesful")
     } catch (error) {
       console.log(error);
     }
