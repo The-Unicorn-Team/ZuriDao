@@ -33,7 +33,7 @@ const Election = () => {
 
   const proof = getProof
 
-  console.log("this is the proof\n",proof)
+  
   // fetch contract
   const createEthereumContract = () => {
     const provider = new ethers.providers.Web3Provider(ethereum);
@@ -93,13 +93,13 @@ const Election = () => {
 
   const voteCandidate = async (id) => {
     const contract = createEthereumContract();
-
     
-
+    const hexProof = await getProof();
     try {
-      
-      await contract.vote(contenders.id, proof);
-      // console.log(await contract.root())
+      console.log(hexProof);
+      alert(hexProof);
+
+      console.log((await contract.vote(contenders.id, hexProof)))
     } catch (error) {
       console.log(error);
     }
