@@ -56,6 +56,7 @@ contract ZuriElection is Pausable {
 
     ///@notice variable to track winning candidate
     ///@dev an array that returns id of winning candidate(s)
+    uint256[] public winnerIds;
 
     ///@notice variable to track winning candidate
     ///@dev an array that returns id of winning candidate(s)
@@ -88,7 +89,7 @@ contract ZuriElection is Pausable {
     }
 
     struct Election {
-        string Position;
+        string position;
         string description;
         Candidate winner;
     }
@@ -216,7 +217,14 @@ contract ZuriElection is Pausable {
             }
         }
 
+
+        winners[electionCount] = Election({
+            position: position,
+            description : description,
+            winner: candidates[winnerIds[0]]
+        });
         return (winnerVoteCount, winnerIds);
+
     }
 
     /// @notice function to start election
